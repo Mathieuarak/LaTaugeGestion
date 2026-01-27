@@ -31,8 +31,7 @@ class ClientModel extends Model
     protected $validationRules      = [
         'nom' => 'required|max_length[15]',
         'prenom' => 'required|max_length[15]',
-        // adressePost must contain a 5-digit postal code (e.g. "75001 Paris")
-        'adressePost' => 'required|max_length[100]|regex_match[/\d{5}/]',
+        'adressePost' => 'required|max_length[150]',
         'adresseMail' => 'required|valid_email',
         'tel' => 'required|exact_length[10]|numeric',
     ];
@@ -47,8 +46,6 @@ class ClientModel extends Model
         ],
         'adressePost' => [
             'required' => 'L\'adresse postale est obligatoire.',
-            'max_length' => 'Le code postal doit contenir exactement 5 chiffres.',
-            'regex_match' => 'Le code postal doit contenir uniquement des chiffres.'
         ],
         'adresseMail' => [
             'required' => 'L\'adresse mail est obligatoire.',

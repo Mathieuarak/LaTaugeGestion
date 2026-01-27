@@ -31,17 +31,8 @@
     </p>
 
     <p>
-        <label for="adressePost">Code postal :</label>
-        <input
-            type="text"
-            name="adressePost"
-            id="adressePost"
-            value="<?= esc(old('adressePost', $client['adressePost'])) ?>"
-            maxlength="5"
-            pattern="[0-9]{5}"
-            inputmode="numeric"
-            required
-        >
+        <label for="adressePost">Adresse postal :</label>
+        <input type="text" name="adressePost" id="adressePost" value="<?= esc(old('adressePost', $client['adressePost'])) ?>">
     </p>
 
     <p>

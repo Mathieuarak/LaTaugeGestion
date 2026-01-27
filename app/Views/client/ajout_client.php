@@ -25,18 +25,8 @@
     </p>
 
     <p>
-        <label for="adressePost">Code postal :</label>
-        <input
-            type="text"
-            name="adressePost"
-            id="adressePost"
-            value="<?= esc(old('adressePost')) ?>"
-            maxlength="5"
-            pattern="[0-9]{5}"
-            inputmode="numeric"
-            required
-            placeholder="75001"
-            title="Le code postal doit contenir exactement 5 chiffres">
+        <label for="adressePost">Adresse postal :</label>
+        <input type="text" name="adressePost" id="adressePost" value="<?= esc(old('adressePost')) ?>">
     </p>
 
 
