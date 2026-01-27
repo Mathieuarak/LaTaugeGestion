@@ -1,0 +1,190 @@
+/* Global */
+form {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+h1 {
+    margin-bottom: 24px;
+    font-size: 1.8rem;
+}
+
+/* Grille principale */
+.form-grid {
+    background: #fff;
+}
+
+/* Partie formulaire */
+.form-main {
+    background: #fdfdfd;
+    border: 1px solid #e5e5e5;
+    padding: 24px;
+    border-radius: 8px;
+}
+
+.form-main p {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+}
+
+.form-main label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.form-main input,
+.form-main select {
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+}
+
+.form-main input:focus,
+.form-main select:focus {
+    outline: none;
+    border-color: #d32f2f;
+    box-shadow: 0 0 0 2px rgba(211,47,47,0.15);
+}
+
+/* Bouton */
+.form-main button {
+    margin-top: 10px;
+    padding: 10px 16px;
+    background: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.form-main button:hover {
+    background: #b71c1c;
+}
+
+/* Colonne tarif */
+.form-tarif {
+    background: #f9fafb;
+    border: 1px solid #e5e5e5;
+    padding: 20px;
+    border-radius: 8px;
+    position: sticky;
+    top: 20px;
+}
+
+.form-tarif h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* Box tarif */
+.tarif-box {
+    text-align: left !important;
+}
+
+.tarif-box strong {
+    font-size: 1.4rem;
+    display: block;
+    margin: 6px 0;
+}
+
+#totalDisplay {
+    font-weight: bold;
+    color: #c62828;
+}
+
+/* Options */
+.options-list p {
+    margin: 8px 0;
+}
+
+.options-list label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.options-list input[type="checkbox"] {
+    transform: scale(1.1);
+}
+
+/* Séparateur */
+.form-tarif hr {
+    margin: 16px 0;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+/* Options */
+.options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px; /* moins d’espace entre options */
+}
+
+.options-list p {
+    margin: 0;
+}
+
+.options-list label {
+    display: grid;
+    grid-template-columns: 18px 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;        /* PLUS PETIT */
+    font-size: 0.85rem;      /* PLUS PETIT */
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+    background: #fff;
+    cursor: pointer;
+}
+
+.options-list label:hover {
+    background: #fdecec;
+    border-color: #f5b5b5;
+}
+
+.options-list input[type="checkbox"] {
+    transform: scale(1);     /* checkbox plus discrète */
+}
+
+.options-list label::after {
+    content: attr(data-price) " €";
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #c62828;
+}
+/* Box total mise en avant */
+.total-box {
+    border: 2px solid #c62828;
+    background: #fdecec;
+    padding: 16px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 14px;
+}
+
+.total-label {
+    font-size: 0.75rem;       /* PLUS PETIT */
+    color: #7a1c1c;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.total-price {
+    font-size: 2.2rem;        /* PLUS GROS */
+    font-weight: 800;
+    color: #c62828;
+    line-height: 1.2;
+}
+
+/* Tarif de base très discret */
+.base-price {
+    font-size: 0.8rem;        /* PLUS PETIT */
+    color: #666;
+    text-align: center;
+}

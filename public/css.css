@@ -1,0 +1,195 @@
+/* ===============================
+   Light & Modern stylesheet - Dynamique
+   =============================== */
+
+/* Variables */
+:root {
+    --bg: #ffffff;
+    --card: rgba(245,245,245,0.6);
+    --text: #0f1724;
+    --muted: #5b6270;
+    --accent: #b94e10;
+    --accent-dark: #760f0f;
+    --border: rgba(229,229,229,0.6);
+    --radius: 12px;
+    --shadow-sm: 0 4px 12px rgba(0,0,0,0.08); 
+    --shadow-md: 0 12px 36px rgba(0,0,0,0.12);
+    --max-width: 900px;
+    --base-font-size: 16px;
+    --transition: 250ms cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ===============================
+   Body & Base
+   =============================== */
+body {
+    background: #f9fafb;
+    color: var(--text);
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, -apple-system;
+    font-size: var(--base-font-size);
+    line-height: 1.6;
+    padding: 24px 16px;
+}
+
+/* ===============================
+   Buttons
+   =============================== */
+button,
+.latauge-btn,
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: var(--radius);
+    border: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition);
+}
+
+/* Hover effet dynamique */
+button:hover,
+.latauge-btn:hover,
+.btn:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(224, 160, 40, 0.411), 0 4px 12px rgba(0,0,0,0.1);
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+}
+
+/* Effet pulse au hover */
+button::after,
+.latauge-btn::after,
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    z-index: 0;
+}
+
+button:hover::after,
+.latauge-btn:hover::after,
+.btn:hover::after {
+    width: 250px;
+    height: 250px;
+}
+
+/* ===============================
+   Typography
+   =============================== */
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+}
+
+/* ===============================
+   Cards
+   =============================== */
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md), 0 0 12px rgba(16,185,129,0.15);
+    border-color: rgba(185, 174, 16, 0.3);
+}
+
+/* ===============================
+   Inputs / Select / Textarea
+   =============================== */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    font-size: 1rem;
+    transition: all var(--transition);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(185, 16, 16, 0.3);
+    transform: scale(1.02);
+}
+
+/* ===============================
+   Tables
+   =============================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+thead {
+    background: rgba(245,245,245,0.8);
+}
+
+thead th {
+    color: var(--text);
+    font-weight: 600;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+}
+
+tbody tr:hover {
+    background: rgba(0,0,0,0.03);
+}
+
+/* ===============================
+   Responsive Tweaks
+   =============================== */
+@media (max-width:900px) {
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.6rem; }
+    .card { padding: 16px; }
+}
+
+@media (max-width:560px) {
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    .card { padding: 12px; }
+    button { padding: 10px 16px; font-size: 0.9rem; }
+}
