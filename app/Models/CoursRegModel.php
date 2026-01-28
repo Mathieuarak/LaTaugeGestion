@@ -6,19 +6,15 @@ use CodeIgniter\Model;
 
 class CoursRegModel extends Model
 {
-    protected $table = 'coursReg';          // Nom exact de la table
-    protected $primaryKey = 'idcoursReg';   // Clé primaire exacte
+    protected $table            = 'coursreg';
+    protected $primaryKey       = 'idcoursReg';
     protected $useAutoIncrement = true;
-    protected $returnType = 'array';
+    protected $returnType       = 'array';
+
     protected $allowedFields = [
         'coursDate',
         'description',
-        'clients_idclients'
+        'clients_idclients', 
+        'paye'
     ];
-
-    // Dates
-    protected $useTimestamps = false;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
 }

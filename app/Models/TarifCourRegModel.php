@@ -6,8 +6,8 @@ use CodeIgniter\Model;
 
 class TarifCourRegModel extends Model
 {
-    protected $table = 'tarifCourReg';         // Nom exact de la table
-    protected $primaryKey = 'idtarifCourReg';  // Clé primaire exacte
+    protected $table = 'tarifCourReg';
+    protected $primaryKey = 'idtarifCourReg';  
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
     protected $allowedFields = [

@@ -6,24 +6,17 @@ use CodeIgniter\Model;
 
 class CourRegTarifCourRegModel extends Model
 {
-    protected $table = 'courReg_tarifCourReg';
+    protected $table            = 'courreg_tarifcourreg';
+    protected $primaryKey       = 'id';               
+    protected $useAutoIncrement = true;
+    protected $returnType       = 'array';
 
-    // Cette table n'a pas de PK auto-incrémentée
-    protected $primaryKey = null;
-    protected $useAutoIncrement = false;
-
-    protected $returnType = 'array';
     protected $allowedFields = [
-        'coursReg_idcoursReg',
+        'coursreg_idcoursReg',
         'tarifCourReg_idtarifCourReg',
         'tarifCourCollectifs',
         'tarifCourADeux',
         'tarifCourParticulier',
-        'tarifTravailCheval'
+        'tarifTravailCheval',
     ];
-
-    // Dates
-    protected $useTimestamps = false;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
 }

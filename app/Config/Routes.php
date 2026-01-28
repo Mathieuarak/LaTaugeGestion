@@ -71,9 +71,10 @@ $routes->post('tarif-cheval-remove', 'TarifChevalController::remove', ['as' => '
 | TARIFS COURS
 |--------------------------------------------------------------------------
 */
-$routes->get('cours', 'cours::index', ['as' => 'cours']);
+$routes->get('cours', 'Cours::index', ['as' => 'cours']);
+$routes->get('cours/clients/(:num)', 'Cours::coursClient/$1', ['as' => 'cours_client']);
+$routes->post('cours/toggle-paye/(:num)', 'Cours::togglePaye/$1', ['as' => 'cours_toggle_paye']);
 $routes->get('ajout_cours', 'cours::ajout', ['as' => 'ajout_cours']);
-
 $routes->post('tarif-cours-create', 'cours::store', ['as' => 'tarif_cours_create']);
 $routes->get('tarif-cours-modifier-(:num)', 'cours::edit/$1', ['as' => 'tarif_cours_modifier']);
 $routes->post('tarif-cours-update-(:num)', 'cours::update/$1', ['as' => 'tarif_cours_update']);
