@@ -3,7 +3,7 @@ form {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 body {
-    background-image: url('/chevel.jpg');
+    background-image: url('/cheche.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -51,15 +51,15 @@ h1 {
 .form-main input:focus,
 .form-main select:focus {
     outline: none;
-    border-color: #d32f2f;
-    box-shadow: 0 0 0 2px rgba(211,47,47,0.15);
+    border-color: #0b2e6b;
+    box-shadow: 0 0 0 2px rgba(11,46,107,0.15);
 }
 
 /* Bouton */
 .form-main button {
     margin-top: 10px;
     padding: 10px 16px;
-    background: #d32f2f;
+    background: #0b2e6b;
     color: white;
     border: none;
     border-radius: 6px;
@@ -68,7 +68,7 @@ h1 {
 }
 
 .form-main button:hover {
-    background: #b71c1c;
+    background: #091d43;
 }
 
 /* Colonne tarif */
@@ -99,7 +99,7 @@ h1 {
 
 #totalDisplay {
     font-weight: bold;
-    color: #c62828;
+    color: #0b2e6b;
 }
 
 /* Options */
@@ -125,7 +125,8 @@ h1 {
     border: none;
     border-top: 1px solid #ddd;
 }
-/* Options */
+
+/* Options compact */
 .options-list {
     display: flex;
     flex-direction: column;
@@ -150,8 +151,8 @@ h1 {
 }
 
 .options-list label:hover {
-    background: #fdecec;
-    border-color: #f5b5b5;
+    background: #eaf2ff;
+    border-color: #cfe0ff;
 }
 
 .options-list input[type="checkbox"] {
@@ -162,12 +163,13 @@ h1 {
     content: attr(data-price) " €";
     font-weight: 600;
     font-size: 0.85rem;
-    color: #c62828;
+    color: #0b2e6b;
 }
+
 /* Box total mise en avant */
 .total-box {
-    border: 2px solid #c62828;
-    background: #fdecec;
+    border: 2px solid #0b2e6b;
+    background: #eaf2ff;
     padding: 16px;
     border-radius: 10px;
     text-align: center;
@@ -176,7 +178,7 @@ h1 {
 
 .total-label {
     font-size: 0.75rem;       /* PLUS PETIT */
-    color: #7a1c1c;
+    color: #0b2e6b;
     margin-bottom: 6px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -185,7 +187,7 @@ h1 {
 .total-price {
     font-size: 2.2rem;        /* PLUS GROS */
     font-weight: 800;
-    color: #c62828;
+    color: #0b2e6b;
     line-height: 1.2;
 }
 
@@ -195,3 +197,35 @@ h1 {
     color: #666;
     text-align: center;
 }
+
+/* Global */
+form {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+body {
+    background-image: url('/cheche.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+h1 {
+    margin-bottom: 24px;
+    font-size: 1.8rem;
+}
+
+/* Grille principale */
+.form-grid {
+    background: transparent;
+}
+
+/* Partie formulaire */
+.form-main {
+    background: rgba(255,255,255,0.98);
+    border: 1px solid #e5e5e5;
+    padding: 24px;
+    border-radius: 8px;
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    backdrop-filter: blur(6px) saturate(120%);
+}
+
+/* duplicate block removed */

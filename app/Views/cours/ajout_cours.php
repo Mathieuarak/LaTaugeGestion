@@ -1,154 +1,14 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('contenu') ?>
 
-<style>
-:root {
-    --primary: #1d4ed8; /* bleu */
-    --primary-dark: #2563eb;
-    --text-dark: #1a1a1a;
-    --text-light: #ffffff;
-    --transition: 200ms cubic-bezier(0.2, 0.9, 0.3, 1);
-}
-
-body {
-    background: url('<?= base_url("chevel.jpg") ?>') no-repeat center center / cover fixed;
-    min-height: 100vh;
-    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, -apple-system;
-    color: var(--text-light);
-    padding: 24px 16px;
-}
-
-h1 {
-    font-size: 3.5rem;
-    font-weight: 900;
-    text-align: center;
-    text-shadow: 0 8px 30px rgba(0,0,0,0.45);
-    margin-bottom: 40px;
-}
-
-/* Formulaire général */
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 32px;
-    width: 100%;
-    max-width: 960px;
-    margin: 0 auto;
-}
-
-.form-grid {
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    width: 100%;
-    flex-wrap: wrap;
-}
-
-.form-main {
-    flex: 1;
-    min-width: 300px;
-}
-
-.form-main p {
-    margin-bottom: 16px;
-    color: #000000;
-}
-
-.form-main label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 600;
-}
-
-.form-main input,
-.form-main select {
-    width: 100%;
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 1rem;
-    outline: none;
-}
-
-/* Options côté */
-.form-side {
-    width: 320px;
-    min-width: 280px;
-    background: #ffffff; /* fond blanc */
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-}
-
-.form-side h3 {
-    margin-bottom: 16px;
-    color: var(--text-dark);
-    text-align: center;
-}
-
-/* Boutons d'options */
-.option-btn {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 12px;
-    border: 1px solid var(--primary);
-    border-radius: 10px;
-    background: #f9f9f9;
-    color: var(--text-dark);
-    font-weight: 600;
-    cursor: pointer;
-    text-align: left;
-    transition: all var(--transition);
-}
-
-.option-btn.selected {
-    background: var(--primary);
-    color: #fff;
-}
-
-/* Bouton envoyer */
-button.btn {
-    padding: 16px 32px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    cursor: pointer;
-    transition: all var(--transition);
-    box-shadow: 0 12px 36px rgba(0,0,0,0.35);
-}
-
-button.btn:hover {
-    transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 24px 60px rgba(0,0,0,0.45);
-    background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    h1 { font-size: 2.8rem; }
-    .form-grid { flex-direction: column; align-items: center; }
-    .form-side { width: 100%; max-width: 400px; }
-}
-
-@media (max-width: 480px) {
-    h1 { font-size: 2.4rem; }
-    button.btn { width: 100%; padding: 14px 0; }
-}
-</style>
-
 <h1>Ajouter un cours</h1>
 
 <form action="<?= route_to('tarif_cours_create') ?>" method="post">
 
-    <div class="form-grid">
+    <div class="form-grid" style="display:flex;gap:24px;align-items:flex-start">
 
-        <!-- Partie principale -->
-        <div class="form-main">
+        <!-- PARTIE GAUCHE : FORMULAIRE -->
+        <div class="form-main" style="flex:1">
 
             <p>
                 <label for="clients_idclients">Client :</label>
@@ -156,7 +16,7 @@ button.btn:hover {
                     <option value="">-- Sélectionner un client --</option>
                     <?php foreach ($clients as $client): ?>
                         <option value="<?= esc($client['idclients']) ?>">
-                            <?= esc($client['nom'].' '.$client['prenom']) ?>
+                            <?= esc($client['nom'] . ' ' . $client['prenom']) ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -172,31 +32,101 @@ button.btn:hover {
                 <input type="text" name="description" id="description">
             </p>
 
-        </div>
-
-        <!-- Options côté -->
-        <div class="form-side">
-            <h3>Options du cours</h3>
-
-            <input type="hidden" name="idTarif" value="<?= $tarifs['idtarifCourReg'] ?>">
-
-            <?php
-            $options = [
-                'tarifCourCollectifs' => 'Cours collectif',
-                'tarifCourADeux' => 'Cours à deux',
-                'tarifCourParticulier' => 'Cours particulier',
-                'tarifTravailCheval' => 'Travail du cheval'
-            ];
-            foreach ($options as $field => $label):
-                $price = $tarifs[$field];
-            ?>
-                <button type="button" class="option-btn" data-input="<?= $field ?>">
-                    <?= $label ?> (<?= $price ?> €)
-                    <input type="radio" name="option_unique" value="<?= $field ?>" style="display:none;">
-                </button>
-            <?php endforeach; ?>
+            <!-- Choix type -->
+            <p>
+                <strong>Type :</strong><br>
+                <label><input type="radio" name="type_cours" value="unique" checked> Cours à l’unité</label><br>
+                <label><input type="radio" name="type_cours" value="forfait"> Forfait</label>
+            </p>
 
         </div>
+
+        <!-- PARTIE DROITE : TARIFS -->
+        <aside class="form-tarif" style="width:340px">
+
+            <!-- COURS À L’UNITÉ -->
+            <div id="bloc-unique">
+                <?php
+                $optionsUnique = [
+                    'tarifCourCollectifs'   => 'Cours collectif',
+                    'tarifCourADeux'        => 'Cours à deux',
+                    'tarifCourParticulier'  => 'Cours particulier',
+                    'tarifTravailCheval'    => 'Travail du cheval'
+                ];
+                ?>
+                <div class="tarif-box" style="border:1px solid #ddd;padding:12px;border-radius:6px;text-align:right;background:#fafafa">
+
+                    <div class="total-box">
+                        <div class="total-label">Tarif du cours</div>
+                        <div id="totalDisplay">0 €</div>
+                    </div>
+
+                    <hr>
+                    <h2 class="options-title">Options</h2>
+
+                    <div class="options-list options-black" style="margin-top:10px">
+                        <?php foreach ($optionsUnique as $field => $label): ?>
+                            <p>
+                                <label>
+                                    <input type="radio" name="option_unique" value="<?= $field ?>" data-price="<?= esc($tarifs[$field]) ?>">
+                                    <?= $label ?> (+<?= esc($tarifs[$field]) ?> €)
+                                </label>
+                            </p>
+                        <?php endforeach; ?>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FORFAITS -->
+            <div id="bloc-forfait" style="display:none">
+                <div class="tarif-box" style="border:1px solid #ddd;padding:12px;border-radius:6px;text-align:right;background:#fafafa">
+
+                    <div class="total-box">
+                        <div class="total-label">Tarif du forfait</div>
+                        <div id="totalDisplayForfait">0 €</div>
+                    </div>
+
+                    <hr>
+                    <h2 class="options-title">Options forfait</h2>
+
+                    <div class="options-list options-black" style="margin-top:10px">
+                        <?php
+                        $fields = [
+                            'tarifCoursCollec10' => 'Cours collectif 10',
+                            'tarifCoursDuo10'    => 'Cours à deux 10',
+                            'tarifCoursSolo10'   => 'Cours solo 10',
+                            'travailCheval1'     => 'Travail cheval 1',
+                            'tarifCoursCollec5'  => 'Cours collectif 5',
+                            'tarifCoursDuo5'     => 'Cours à deux 5',
+                            'tarifCoursSolo5'    => 'Cours solo 5',
+                            'travailCheval2'     => 'Travail cheval 2'
+                        ];
+
+                        foreach ($tarifsForfait as $forfait): ?>
+                            <div style="margin-bottom:8px;">
+                                <strong><?= esc($forfait['libelle'] ?? 'Forfait') ?></strong>
+                                <?php foreach ($fields as $key => $label):
+                                    if (!empty($forfait[$key]) && is_numeric($forfait[$key])):
+                                ?>
+                                    <p style="margin:6px 0;">
+                                        <label>
+                                            <input type="radio" name="forfait_option" value="<?= $key ?>_<?= $forfait['idtarifCours'] ?>" data-price="<?= esc($forfait[$key]) ?>">
+                                            <?= $label ?> (+<?= esc(number_format($forfait[$key],2)) ?> €)
+                                        </label>
+                                    </p>
+                                <?php endif; endforeach; ?>
+                            </div>
+                            <hr>
+                        <?php endforeach; ?>
+                    </div>
+
+                </div>
+            </div>
+
+            <input type="hidden" name="total_tarif" id="total_tarif" value="0">
+
+        </aside>
 
     </div>
 
@@ -208,20 +138,42 @@ button.btn:hover {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const optionButtons = document.querySelectorAll('.option-btn');
 
-    optionButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            // décocher tous les boutons
-            optionButtons.forEach(b => {
-                b.classList.remove('selected');
-                b.querySelector('input[type=radio]').checked = false;
+    const totalInput = document.getElementById('total_tarif');
+    const totalDisplay = document.getElementById('totalDisplay');
+    const totalDisplayForfait = document.getElementById('totalDisplayForfait');
+    const blocUnique = document.getElementById('bloc-unique');
+    const blocForfait = document.getElementById('bloc-forfait');
+
+    function updateTotal() {
+        let total = 0;
+        if(document.querySelector('input[name="type_cours"]:checked').value === 'unique') {
+            document.querySelectorAll('#bloc-unique input[type=radio][data-price]').forEach(el => {
+                if(el.checked) total = parseFloat(el.dataset.price);
             });
-            // sélectionner celui cliqué
-            this.classList.add('selected');
-            this.querySelector('input[type=radio]').checked = true;
+            totalDisplay.textContent = total + ' €';
+        } else {
+            const selected = document.querySelector('#bloc-forfait input[name="forfait_option"]:checked');
+            if (selected) total = parseFloat(selected.dataset.price) || 0;
+            totalDisplayForfait.textContent = total + ' €';
+        }
+        totalInput.value = total;
+    }
+
+    // toggle blocs
+    document.querySelectorAll('input[name="type_cours"]').forEach(el => {
+        el.addEventListener('change', () => {
+            blocUnique.style.display = el.value === 'unique' ? 'block' : 'none';
+            blocForfait.style.display = el.value === 'forfait' ? 'block' : 'none';
+            updateTotal();
         });
     });
+
+    document.querySelectorAll('#bloc-unique input').forEach(el => el.addEventListener('change', updateTotal));
+    document.querySelectorAll('#bloc-forfait input[name="forfait_option"]').forEach(el => el.addEventListener('change', updateTotal));
+
+    updateTotal();
+
 });
 </script>
 

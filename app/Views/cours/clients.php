@@ -17,7 +17,7 @@
     $table->setHeading('Client', 'Nombre de cours', 'Action');
 
     foreach ($clients as $client) {
-        $voirCours = '<button type="button" class="btn" onclick="window.location.href=\''
+        $voirCours = '<button type="button" class="btn" onclick="window.location.href=\'' 
             . route_to('cours_client', $client['idclients']) . '\'">
                         Voir les cours
                      </button>';

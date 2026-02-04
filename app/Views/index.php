@@ -3,10 +3,10 @@
 
 <style>
     :root {
-        --primary: #4f46e5;       /* Indigo clair */
-        --primary-dark: #3730a3;  /* Indigo foncé */
+        --primary: #2f2966;       /* Indigo clair */
+        --primary-dark: #2b2d85;  /* Indigo foncé */
         --text: #ffffff;           /* Texte blanc pour contraste */
-        --muted: rgba(255,255,255,0.75);
+        --muted: rgba(156, 184, 216, 0.75);
         --transition: 200ms cubic-bezier(0.2, 0.9, 0.3, 1);
     }
 
@@ -22,7 +22,7 @@
     }
 
     body {
-        background: url('<?= base_url("chevel.jpg") ?>') no-repeat center center / cover fixed;
+        background: url('<?= base_url("cheche.jpg") ?>') no-repeat center center / cover fixed;
         min-height: 100vh;
         color: var(--text);
         font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, -apple-system;

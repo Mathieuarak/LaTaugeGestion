@@ -9,7 +9,7 @@
         padding: 30px;
         background: #ffffff;
         border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         font-family: Arial, sans-serif;
     }
 
@@ -17,6 +17,10 @@
         text-align: center;
         margin-bottom: 30px;
         color: #333;
+    }
+
+    .horse-section h2 {
+        color: #000;
     }
 
     .client-info {
@@ -81,20 +85,20 @@
         <p><?= esc($client['tel']) ?></p>
     </div>
 </div>
-    <div class="horse-section client-card">
-        <h2>Chevaux affectés</h2>
+<div class="horse-section client-card">
+    <h2>Chevaux affectés</h2>
 
-        <?php if (! empty($chevaux) && is_array($chevaux)): ?>
-            <div class="horse-list">
-                <?php foreach ($chevaux as $cheval): ?>
-                    <div class="horse-item">
-                        <h3><?= esc($cheval['nom'] ?? ($cheval['nom_cheval'] ?? '—')) ?> <?php if(!empty($cheval['numSire'])): ?><small style="font-weight:normal;color:#666">(SIRE: <?= esc($cheval['numSire']) ?>)</small><?php endif; ?></h3>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php else: ?>
-            <p>Aucun cheval affecté à ce client.</p>
-        <?php endif; ?>
-    </div>
+    <?php if (! empty($chevaux) && is_array($chevaux)): ?>
+        <div class="horse-list">
+            <?php foreach ($chevaux as $cheval): ?>
+                <div class="horse-item">
+                    <h3><?= esc($cheval['nom'] ?? ($cheval['nom_cheval'] ?? '—')) ?> <?php if (!empty($cheval['numSire'])): ?><small style="font-weight:normal;color:#666">(SIRE: <?= esc($cheval['numSire']) ?>)</small><?php endif; ?></h3>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php else: ?>
+        <p>Aucun cheval affecté à ce client.</p>
+    <?php endif; ?>
+</div>
 
 <?= $this->endSection() ?>
