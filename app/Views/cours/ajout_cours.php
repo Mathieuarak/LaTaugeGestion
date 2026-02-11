@@ -112,10 +112,10 @@
                                 <p style="margin:6px 0;">
                                     <label>
                                         <!-- name unique par forfait pour radio -->
-                                        <input type="radio" 
-                                               name="forfait_option_<?= $forfait['idtarifCours'] ?>" 
-                                               value="<?= $key ?>|<?= $forfait['idtarifCours'] ?>" 
-                                               data-price="<?= esc($forfait[$key]) ?>">
+                                             <input type="radio" 
+                                                 name="forfait_option" 
+                                                 value="<?= $key ?>|<?= $forfait['idtarifCours'] ?>" 
+                                                 data-price="<?= esc($forfait[$key]) ?>">
                                         <?= $label ?> (+<?= esc(number_format($forfait[$key],2)) ?> €)
                                     </label>
                                 </p>

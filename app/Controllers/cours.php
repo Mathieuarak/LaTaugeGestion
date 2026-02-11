@@ -67,8 +67,20 @@ class Cours extends BaseController
             ->getResultArray();
 
         // Forfaits: récupérer les lignes jointes et regrouper par enregistrement de forfait
+        // Sélectionner aussi les colonnes de liaison préfixées pour savoir
+        // quelle option a été activée (valeur 1 dans la table pivot).
         $rawForfaits = $db->table('coursForfait cf')
-            ->select('cf.*, link.*, tf.*')
+            ->select(
+                'cf.*, tf.*, '
+                . 'link.tarifCoursCollec10 AS link_tarifCoursCollec10, '
+                . 'link.tarifCoursDuo10 AS link_tarifCoursDuo10, '
+                . 'link.tarifCoursSolo10 AS link_tarifCoursSolo10, '
+                . 'link.travailCheval1 AS link_travailCheval1, '
+                . 'link.tarifCoursCollec5 AS link_tarifCoursCollec5, '
+                . 'link.tarifCoursDuo5 AS link_tarifCoursDuo5, '
+                . 'link.tarifCoursSolo5 AS link_tarifCoursSolo5, '
+                . 'link.travailCheval2 AS link_travailCheval2'
+            )
             ->join('courForfait_tarifCourForfait link', 'link.coursForfait_idcoursfor = cf.idcoursfor', 'left')
             ->join('tarifcourforfait tf', 'tf.idtarifCours = link.tarifCourForfait_idtarifCours', 'left')
             ->where('cf.clients_idclients', $idClient)
@@ -101,21 +113,27 @@ class Cours extends BaseController
                 ];
             }
 
-            // parcourir les champs connus et ajouter une option si la valeur présente > 0
+            // parcourir les champs connus et n'ajouter que l'option qui
+            // a été marquée dans la table de liaison (link_<field> == 1),
+            // puis récupérer le prix correspondant dans la table tarif (tf => $row[$field]).
             foreach (array_keys($labels) as $field) {
-                $prix = 0;
-                if (isset($row[$field]) && is_numeric($row[$field]) && floatval($row[$field]) > 0) {
-                    $prix = floatval($row[$field]);
-                } elseif (isset($row["{$field}"]) && !empty($row["{$field}"])) {
-                    // fallback (au cas où la colonne serait non numérique)
-                    $prix = floatval($row["{$field}"]);
-                }
+                $linkKey = 'link_' . $field;
+                if (isset($row[$linkKey]) && intval($row[$linkKey]) === 1) {
+                    $prix = 0;
+                    if (isset($row[$field]) && is_numeric($row[$field])) {
+                        $prix = floatval($row[$field]);
+                    } elseif (isset($row[$field]) && !empty($row[$field])) {
+                        $prix = floatval($row[$field]);
+                    }
 
-                if ($prix > 0) {
-                    $forfaits[$id]['options'][] = [
-                        'nom'  => $labels[$field],
-                        'prix' => $prix
-                    ];
+                    if ($prix > 0) {
+                        $forfaits[$id]['options'][] = [
+                            'nom'  => $labels[$field],
+                            'prix' => $prix
+                        ];
+                    }
+                    // une seule option possible par forfait : on peut arrêter la boucle
+                    break;
                 }
             }
         }
@@ -210,7 +228,8 @@ class Cours extends BaseController
                 return redirect()->back()->with('error', 'Veuillez sélectionner une option');
             }
 
-            list($fieldChoisi, $tarifId) = explode('_', $forfaitOption);
+            // La valeur envoyée depuis la vue est au format "champ|idTarif"
+            list($fieldChoisi, $tarifId) = explode('|', $forfaitOption);
 
             $coursForfaitModel  = new CoursForfaitModel();
             $liaisonModel       = new CourForfaitTarifCourForfaitModel();
