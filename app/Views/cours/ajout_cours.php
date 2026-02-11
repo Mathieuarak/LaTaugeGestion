@@ -109,12 +109,16 @@
                                 <?php foreach ($fields as $key => $label):
                                     if (!empty($forfait[$key]) && is_numeric($forfait[$key])):
                                 ?>
-                                    <p style="margin:6px 0;">
-                                        <label>
-                                            <input type="radio" name="forfait_option" value="<?= $key ?>_<?= $forfait['idtarifCours'] ?>" data-price="<?= esc($forfait[$key]) ?>">
-                                            <?= $label ?> (+<?= esc(number_format($forfait[$key],2)) ?> €)
-                                        </label>
-                                    </p>
+                                <p style="margin:6px 0;">
+                                    <label>
+                                        <!-- name unique par forfait pour radio -->
+                                        <input type="radio" 
+                                               name="forfait_option_<?= $forfait['idtarifCours'] ?>" 
+                                               value="<?= $key ?>|<?= $forfait['idtarifCours'] ?>" 
+                                               data-price="<?= esc($forfait[$key]) ?>">
+                                        <?= $label ?> (+<?= esc(number_format($forfait[$key],2)) ?> €)
+                                    </label>
+                                </p>
                                 <?php endif; endforeach; ?>
                             </div>
                             <hr>
@@ -153,8 +157,11 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             totalDisplay.textContent = total + ' €';
         } else {
-            const selected = document.querySelector('#bloc-forfait input[name="forfait_option"]:checked');
-            if (selected) total = parseFloat(selected.dataset.price) || 0;
+            total = 0;
+            // chaque forfait → récupérer l'option cochée seulement
+            document.querySelectorAll('#bloc-forfait input[type=radio]:checked').forEach(el => {
+                total = parseFloat(el.dataset.price) || total;
+            });
             totalDisplayForfait.textContent = total + ' €';
         }
         totalInput.value = total;
@@ -170,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('#bloc-unique input').forEach(el => el.addEventListener('change', updateTotal));
-    document.querySelectorAll('#bloc-forfait input[name="forfait_option"]').forEach(el => el.addEventListener('change', updateTotal));
+    document.querySelectorAll('#bloc-forfait input[type=radio]').forEach(el => el.addEventListener('change', updateTotal));
 
     updateTotal();
 

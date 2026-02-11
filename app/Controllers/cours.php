@@ -96,7 +96,7 @@ class Cours extends BaseController
                 $forfaits[$id] = [
                     'idcoursfor' => $id,
                     'dateAjout'  => $row['dateAjout'] ?? null,
-                    'description'=> $row['description'] ?? '',
+                    'description' => $row['description'] ?? '',
                     'options'    => []
                 ];
             }
@@ -166,15 +166,22 @@ class Cours extends BaseController
     ======================= */
     public function store()
     {
-        $type = $this->request->getPost('type_cours'); // unique ou forfait
-        $clientId = $this->request->getPost('client');
+        $type        = $this->request->getPost('type_cours');
+        $clientId    = $this->request->getPost('client');
         $description = $this->request->getPost('description');
 
+        /* =====================================================
+       ================= COURS À L'UNITÉ ===================
+    ===================================================== */
         if ($type === 'unique') {
+
             $option = $this->request->getPost('option_unique');
 
             $coursRegModel = new CoursRegModel();
             $linkModel     = new CourRegTarifCourRegModel();
+            $tarifModel    = new TarifCourRegModel();
+
+            $tarif = $tarifModel->first();
 
             $idcoursReg = $coursRegModel->insert([
                 'coursDate'         => $this->request->getPost('coursDate'),
@@ -184,89 +191,210 @@ class Cours extends BaseController
 
             $linkModel->insert([
                 'coursreg_idcoursReg'         => $idcoursReg,
-                'tarifCourReg_idtarifCourReg' => $this->request->getPost('idTarif'),
+                'tarifCourReg_idtarifCourReg' => $tarif['idtarifCourReg'],
                 'tarifCourCollectifs'   => $option === 'tarifCourCollectifs' ? 1 : 0,
                 'tarifCourADeux'        => $option === 'tarifCourADeux' ? 1 : 0,
                 'tarifCourParticulier'  => $option === 'tarifCourParticulier' ? 1 : 0,
-                'tarifTravailCheval'    => $option === 'tarifTravailCheval' ? 1 : 0
+                'tarifTravailCheval'    => $option === 'tarifTravailCheval' ? 1 : 0,
             ]);
-        } elseif ($type === 'forfait') {
+        }
+
+        /* =====================================================
+       ===================== FORFAIT =======================
+    ===================================================== */
+        if ($type === 'forfait') {
 
             $forfaitOption = $this->request->getPost('forfait_option');
+
             if (!$forfaitOption) {
-                return redirect()->back()->with('error', 'Veuillez sélectionner une option de forfait');
+                return redirect()->back()->with('error', 'Veuillez sélectionner une option');
             }
 
-            list($field, $forfaitId) = explode('_', $forfaitOption);
+            list($fieldChoisi, $tarifId) = explode('_', $forfaitOption);
 
-            $coursForfaitModel = new CoursForfaitModel();
-            $coursForfaitTarifModel = new CourForfaitTarifCourForfaitModel();
-            $tarifForfaitModel = new TarifCourForfaitModel();
+            $coursForfaitModel  = new CoursForfaitModel();
+            $liaisonModel       = new CourForfaitTarifCourForfaitModel();
+            $tarifModel         = new TarifCourForfaitModel();
 
-            // 1️⃣ Créer l’enregistrement général
+            $tarifRow = $tarifModel->find($tarifId);
+
+            if (!$tarifRow || !isset($tarifRow[$fieldChoisi])) {
+                return redirect()->back()->with('error', 'Erreur tarif');
+            }
+
+            $prixFinal = floatval($tarifRow[$fieldChoisi]);
+
+            // 1️⃣ Création du forfait
             $idcoursFor = $coursForfaitModel->insert([
                 'clients_idclients' => $clientId,
                 'description'       => $description,
                 'dateAjout'         => date('Y-m-d')
             ]);
 
-            // 2️⃣ Créer la ligne pivot avec uniquement l'option sélectionnée
-            $tarifRow = $tarifForfaitModel->find($forfaitId);
-            $prix = 0;
-            if ($tarifRow && isset($tarifRow[$field]) && is_numeric($tarifRow[$field])) {
-                $prix = floatval($tarifRow[$field]);
-            }
-
-            $data = [
+            // 2️⃣ Création de la ligne pivot
+            $dataOptions = [
                 'coursForfait_idcoursfor'       => $idcoursFor,
-                'tarifCourForfait_idtarifCours' => $forfaitId,
-                $field                           => $prix
+                'tarifCourForfait_idtarifCours' => $tarifId,
+                'tarifCoursCollec10' => 0,
+                'tarifCoursDuo10'    => 0,
+                'tarifCoursSolo10'   => 0,
+                'travailCheval1'     => 0,
+                'tarifCoursCollec5'  => 0,
+                'tarifCoursDuo5'     => 0,
+                'tarifCoursSolo5'    => 0,
+                'travailCheval2'     => 0,
+                'prixFinal'          => $prixFinal
             ];
 
-            $coursForfaitTarifModel->insert($data);
+            // on met uniquement celle choisie à 1
+            $dataOptions[$fieldChoisi] = 1;
+
+            $liaisonModel->insert($dataOptions);
         }
 
         return redirect()->route('cours')->with('success', 'Cours créé avec succès');
     }
+
 
     /* =======================
        FORMULAIRE MODIF
     ======================= */
     public function edit($id)
     {
+        $coursRegModel = new CoursRegModel();
+        $coursForfaitModel = new CoursForfaitModel();
+        $tarifForfaitModel = new TarifCourForfaitModel();
+
         return view('cours/edit_cours', [
-            'cours'          => (new CoursRegModel())->find($id),
+            'cours'          => $coursRegModel->find($id),
             'options'        => (new CourRegTarifCourRegModel())->where('coursreg_idcoursReg', $id)->first(),
             'clients'        => (new ClientModel())->findAll(),
             'tarifs'         => (new TarifCourRegModel())->first(),
+            'tarifsForfait'  => $tarifForfaitModel->findAll(), // <-- AJOUTÉ
             'redirectClient' => $this->request->getGet('redirect')
         ]);
     }
+
 
     /* =======================
        UPDATE COURS
     ======================= */
     public function update($id)
     {
-        $coursModel = new CoursRegModel();
-        $linkModel  = new CourRegTarifCourRegModel();
+        $type        = $this->request->getPost('type_cours'); // unique | forfait
+        $clientId    = $this->request->getPost('client');
+        $description = $this->request->getPost('description');
+        $dateCours   = $this->request->getPost('coursDate');
 
-        $option = $this->request->getPost('option_unique');
+        /* =======================
+       COURS À L’UNITÉ
+    ======================= */
+        if ($type === 'unique') {
 
-        $coursModel->update($id, [
-            'coursDate'         => $this->request->getPost('coursDate'),
-            'description'       => $this->request->getPost('description'),
-            'clients_idclients' => $this->request->getPost('client')
-        ]);
+            $option = $this->request->getPost('option_unique');
 
-        $linkModel
-            ->where('coursreg_idcoursReg', $id)
-            ->set([
-                'tarifCourCollectifs'   => $option === 'tarifCourCollectifs' ? 1 : 0,
-                'tarifCourADeux'        => $option === 'tarifCourADeux' ? 1 : 0,
-                'tarifCourParticulier'  => $option === 'tarifCourParticulier' ? 1 : 0,
-                'tarifTravailCheval'    => $option === 'tarifTravailCheval' ? 1 : 0
-            ])->update();
+            $coursModel = new CoursRegModel();
+            $linkModel  = new CourRegTarifCourRegModel();
+            $tarifModel = new TarifCourRegModel();
+
+            // 1️⃣ Update du cours
+            $coursModel->update($id, [
+                'coursDate'         => $dateCours,
+                'description'       => $description,
+                'clients_idclients' => $clientId
+            ]);
+
+            // 2️⃣ Reset toutes les options
+            $dataOptions = [
+                'tarifCourCollectifs'   => 0,
+                'tarifCourADeux'        => 0,
+                'tarifCourParticulier'  => 0,
+                'tarifTravailCheval'    => 0,
+            ];
+
+            // 3️⃣ Activation de l’option choisie si valide
+            if ($option && array_key_exists($option, $dataOptions)) {
+                $dataOptions[$option] = 1;
+            }
+
+            // 4️⃣ Update de la liaison
+            $linkModel
+                ->where('coursreg_idcoursReg', $id)
+                ->set(array_merge([
+                    'tarifCourReg_idtarifCourReg' => $tarifModel->first()['idtarifCourReg']
+                ], $dataOptions))
+                ->update();
+        }
+
+        /* =======================
+       FORFAIT
+    ======================= */ elseif ($type === 'forfait') {
+
+            $rawOption = $this->request->getPost('forfait_option'); // colonne|idTarif
+
+            $coursForfaitModel       = new CoursForfaitModel();
+            $tarifForfaitModel       = new TarifCourForfaitModel();
+            $liaisonForfaitModel     = new CourForfaitTarifCourForfaitModel();
+
+            // 1️⃣ On récupère le forfait existant
+            $forfait = $coursForfaitModel->find($id);
+
+            if (!$forfait) {
+                return redirect()->back()->with('error', 'Forfait introuvable');
+            }
+
+            // 2️⃣ Update info générale du forfait
+            $coursForfaitModel->update($id, [
+                'clients_idclients' => $clientId,
+                'description'       => $description
+            ]);
+
+            if ($rawOption) {
+                [$field, $tarifId] = explode('|', $rawOption);
+
+                $tarifRow = $tarifForfaitModel->find($tarifId);
+                $prix = ($tarifRow && isset($tarifRow[$field])) ? floatval($tarifRow[$field]) : 0;
+
+                // Reset toutes les colonnes
+                $reset = [
+                    'tarifCoursCollec10' => null,
+                    'tarifCoursDuo10'    => null,
+                    'tarifCoursSolo10'   => null,
+                    'travailCheval1'     => null,
+                    'tarifCoursCollec5'  => null,
+                    'tarifCoursDuo5'     => null,
+                    'tarifCoursSolo5'    => null,
+                    'travailCheval2'     => null,
+                ];
+
+                if (!array_key_exists($field, $reset)) {
+                    return redirect()->back()->with('error', 'Option de forfait invalide');
+                }
+
+                // Update ligne pivot
+                $liaisonForfaitModel
+                    ->where('coursForfait_idcoursfor', $id)
+                    ->set(array_merge($reset, [
+                        'tarifCourForfait_idtarifCours' => $tarifId,
+                        $field                           => $prix
+                    ]))
+                    ->update();
+            } else {
+                // si aucune option sélectionnée → reset total
+                $liaisonForfaitModel
+                    ->where('coursForfait_idcoursfor', $id)
+                    ->set([
+                        'tarifCoursCollec10' => null,
+                        'tarifCoursDuo10'    => null,
+                        'tarifCoursSolo10'   => null,
+                        'travailCheval1'     => null,
+                        'tarifCoursCollec5'  => null,
+                        'tarifCoursDuo5'     => null,
+                        'tarifCoursSolo5'    => null,
+                        'travailCheval2'     => null,
+                    ])->update();
+            }
+        }
 
         $redirectClient = $this->request->getPost('redirectClient');
         if ($redirectClient) {

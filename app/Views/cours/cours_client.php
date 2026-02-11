@@ -51,23 +51,28 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Date</th><th>Description</th><th>Options</th><th>Prix</th><th>Payé</th><th>Modifier</th><th>Supprimer</th>
+            <th>Date</th><th>Description</th><th>Option choisie</th><th>Prix</th><th>Modifier</th><th>Supprimer</th>
         </tr>
     </thead>
     <tbody>
     <?php foreach($forfaits as $f):
-        $total = array_sum(array_column($f['options'],'prix'));
-        $optionsHtml = '';
-        foreach($f['options'] as $opt) {
-            $optionsHtml .= esc($opt['nom']) . ' (+' . number_format($opt['prix'],2) . ' €)<br>';
+        // On ne garde que l'option sélectionnée
+        $optionChoisie = array_filter($f['options'], function($opt){
+            return isset($opt['prix']) && floatval($opt['prix']) > 0;
+        });
+        $optionNom = '';
+        $prix = 0;
+        if(!empty($optionChoisie)) {
+            $opt = reset($optionChoisie); // prendre le premier (unique)
+            $optionNom = esc($opt['nom']);
+            $prix = floatval($opt['prix']);
         }
     ?>
         <tr>
             <td><?= date('d/m/Y', strtotime($f['dateAjout'])) ?></td>
             <td><?= esc($f['description']) ?></td>
-            <td><?= $optionsHtml ?></td>
-            <td><?= number_format($total,2) ?> €</td>
-            <td>-</td>
+            <td><?= $optionNom ?></td>
+            <td><?= number_format($prix,2) ?> €</td>
             <td>
                 <button class="btn" onclick="window.location.href='<?= route_to('cours_forfait_modifier', $f['idcoursfor'] ?? '') ?>'">Modifier</button>
             </td>
