@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Models\CoursForfaitModel;
 use App\Models\CourForfaitTarifCourForfaitModel;
 use App\Models\TarifCourForfaitModel;
+use App\Models\ClientModel;
+use App\Models\TarifCourRegModel;
 
 class CoursForfaitController extends BaseController
 {
@@ -24,7 +26,9 @@ class CoursForfaitController extends BaseController
         return view('cours/edit_forfait', [
             'cours' => $cours,
             'link'  => $link,
-            'tarifsForfait' => $tarifModel->findAll()
+            'tarifsForfait' => $tarifModel->findAll(),
+            'clients' => (new ClientModel())->findAll(),
+            'tarifs'  => (new TarifCourRegModel())->first()
         ]);
     }
 
@@ -45,8 +49,42 @@ class CoursForfaitController extends BaseController
         // remplacer le lien pivot
         $pivot->where('coursForfait_idcoursfor', $id)->delete();
 
+        // Support both old 'forfait_id' (single tarif row) and new 'forfait_option' (field|id)
+        $rawOption = $this->request->getPost('forfait_option');
         $forfaitId = $this->request->getPost('forfait_id');
-        if ($forfaitId) {
+
+        if ($rawOption) {
+            [$fieldChoisi, $tarifId] = explode('|', $rawOption);
+            $tarifRow = $tarifModel->find($tarifId);
+
+            if ($tarifRow && isset($tarifRow[$fieldChoisi])) {
+                $prix = floatval($tarifRow[$fieldChoisi]);
+
+                $fields = [
+                    'tarifCoursCollec10',
+                    'tarifCoursDuo10',
+                    'tarifCoursSolo10',
+                    'travailCheval1',
+                    'tarifCoursCollec5',
+                    'tarifCoursDuo5',
+                    'tarifCoursSolo5',
+                    'travailCheval2'
+                ];
+
+                // create pivot row with the chosen field set to the price and prixFinal
+                $dataOptions = [
+                    'coursForfait_idcoursfor'       => $id,
+                    'tarifCourForfait_idtarifCours' => $tarifId,
+                    'prixFinal'                     => $prix
+                ];
+                foreach ($fields as $f) {
+                    $dataOptions[$f] = ($f === $fieldChoisi) ? $prix : null;
+                }
+
+                $pivot->insert($dataOptions);
+            }
+        } elseif ($forfaitId) {
+            // legacy: insert all numeric fields from tarif row
             $tarifRow = $tarifModel->find($forfaitId);
             $data = [
                 'coursForfait_idcoursfor' => $id,

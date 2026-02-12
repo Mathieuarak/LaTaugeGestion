@@ -14,6 +14,7 @@ class CoursForfaitModel extends Model
         'description',
         'dateAjout',
         'stade',
+        'paye',
         'clients_idclients',
         'tarifCoursCollec10',
         'tarifCoursDuo10',

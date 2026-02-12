@@ -4,7 +4,7 @@
 <section>
 
     <h1 style="display: flex; justify-content: space-between; align-items: center;">
-        Clients avec cours
+        Clients avec cours ou forfaits
         <button type="button" class="btn" onclick="window.location.href='<?= base_url('ajout_cours') ?>'">
             Ajouter un cours
         </button>
@@ -14,17 +14,22 @@
 
     <?php
     $table = new \CodeIgniter\View\Table();
-    $table->setHeading('Client', 'Nombre de cours', 'Action');
+    $table->setHeading('Client', 'Cours', 'Forfaits', 'Total', 'Action');
 
     foreach ($clients as $client) {
+
+        $total = $client['nbCours'] + $client['nbForfaits'];
+
         $voirCours = '<button type="button" class="btn" onclick="window.location.href=\'' 
             . route_to('cours_client', $client['idclients']) . '\'">
-                        Voir les cours
+                        Voir
                      </button>';
 
         $table->addRow(
             esc($client['nom'] . ' ' . $client['prenom']),
             $client['nbCours'],
+            $client['nbForfaits'],
+            $total,
             $voirCours
         );
     }

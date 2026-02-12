@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class CourForfaitTarifCourForfaitModel extends Model
 {
     protected $table            = 'courForfait_tarifCourForfait';
-    protected $primaryKey       = 'id'; // si tu as une colonne id auto-incrément
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
 
@@ -21,6 +21,7 @@ class CourForfaitTarifCourForfaitModel extends Model
         'tarifCoursCollec5',
         'tarifCoursDuo5',
         'tarifCoursSolo5',
-        'travailCheval2'
+        'travailCheval2',
+        'prixFinal'
     ];
 }

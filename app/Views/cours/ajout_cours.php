@@ -6,8 +6,6 @@
 <form action="<?= route_to('tarif_cours_create') ?>" method="post">
 
     <div class="form-grid" style="display:flex;gap:24px;align-items:flex-start">
-
-        <!-- PARTIE GAUCHE : FORMULAIRE -->
         <div class="form-main" style="flex:1">
 
             <p>
@@ -21,7 +19,6 @@
                     <?php endforeach; ?>
                 </select>
             </p>
-
             <p>
                 <label for="coursDate">Date du cours :</label>
                 <input type="date" name="coursDate" id="coursDate" required>
@@ -31,8 +28,6 @@
                 <label for="description">Description :</label>
                 <input type="text" name="description" id="description">
             </p>
-
-            <!-- Choix type -->
             <p>
                 <strong>Type :</strong><br>
                 <label><input type="radio" name="type_cours" value="unique" checked> Cours à l’unité</label><br>
@@ -40,11 +35,7 @@
             </p>
 
         </div>
-
-        <!-- PARTIE DROITE : TARIFS -->
         <aside class="form-tarif" style="width:340px">
-
-            <!-- COURS À L’UNITÉ -->
             <div id="bloc-unique">
                 <?php
                 $optionsUnique = [
@@ -77,8 +68,6 @@
 
                 </div>
             </div>
-
-            <!-- FORFAITS -->
             <div id="bloc-forfait" style="display:none">
                 <div class="tarif-box" style="border:1px solid #ddd;padding:12px;border-radius:6px;text-align:right;background:#fafafa">
 
@@ -111,7 +100,6 @@
                                 ?>
                                 <p style="margin:6px 0;">
                                     <label>
-                                        <!-- name unique par forfait pour radio -->
                                              <input type="radio" 
                                                  name="forfait_option" 
                                                  value="<?= $key ?>|<?= $forfait['idtarifCours'] ?>" 
@@ -158,7 +146,6 @@ document.addEventListener('DOMContentLoaded', function() {
             totalDisplay.textContent = total + ' €';
         } else {
             total = 0;
-            // chaque forfait → récupérer l'option cochée seulement
             document.querySelectorAll('#bloc-forfait input[type=radio]:checked').forEach(el => {
                 total = parseFloat(el.dataset.price) || total;
             });
