@@ -28,14 +28,18 @@
                 <label for="description">Description :</label>
                 <input type="text" name="description" id="description">
             </p>
-            <p>
+            <p style="color:#000">
                 <strong>Type :</strong><br>
                 <label><input type="radio" name="type_cours" value="unique" checked> Cours à l’unité</label><br>
                 <label><input type="radio" name="type_cours" value="forfait"> Forfait</label>
             </p>
 
+            <p style="text-align:center;">
+                <button type="submit" class="btn">Enregistrer le cours</button>
+            </p>
+
         </div>
-        <aside class="form-tarif" style="width:340px">
+        <aside class="form-tarif" style="width:340px;min-height:420px">
             <div id="bloc-unique">
                 <?php
                 $optionsUnique = [
@@ -55,7 +59,7 @@
                     <hr>
                     <h2 class="options-title">Options</h2>
 
-                    <div class="options-list options-black" style="margin-top:10px">
+                    <div class="options-list options-black" style="margin-top:10px;max-width:300px;font-size:0.95em;color:#000">
                         <?php foreach ($optionsUnique as $field => $label): ?>
                             <p>
                                 <label>
@@ -79,35 +83,56 @@
                     <hr>
                     <h2 class="options-title">Options forfait</h2>
 
-                    <div class="options-list options-black" style="margin-top:10px">
+                    <div class="options-list options-black" style="margin-top:10px;max-width:300px;font-size:0.95em;color:#000">
                         <?php
-                        $fields = [
-                            'tarifCoursCollec10' => 'Cours collectif 10',
-                            'tarifCoursDuo10'    => 'Cours à deux 10',
-                            'tarifCoursSolo10'   => 'Cours solo 10',
-                            'travailCheval1'     => 'Travail cheval 1',
-                            'tarifCoursCollec5'  => 'Cours collectif 5',
-                            'tarifCoursDuo5'     => 'Cours à deux 5',
-                            'tarifCoursSolo5'    => 'Cours solo 5',
-                            'travailCheval2'     => 'Travail cheval 2'
+                        $groups = [
+                            'five' => [
+                                'label' => 'Forfait 5 jours',
+                                'keys' => [
+                                    'tarifCoursCollec5' => 'Cours collectif 5',
+                                    'tarifCoursDuo5' => 'Cours à deux 5',
+                                    'tarifCoursSolo5' => 'Cours solo 5',
+                                ],
+                            ],
+                            'ten' => [
+                                'label' => 'Forfait 10 jours',
+                                'keys' => [
+                                    'tarifCoursCollec10' => 'Cours collectif 10',
+                                    'tarifCoursDuo10' => 'Cours à deux 10',
+                                    'tarifCoursSolo10' => 'Cours solo 10',
+                                ],
+                            ],
+                            'travail' => [
+                                'label' => 'Travail cheval',
+                                'keys' => [
+                                    'travailCheval1' => 'Travail cheval 1',
+                                    'travailCheval2' => 'Travail cheval 2',
+                                ],
+                            ],
                         ];
 
                         foreach ($tarifsForfait as $forfait): ?>
                             <div style="margin-bottom:8px;">
                                 <strong><?= esc($forfait['libelle'] ?? 'Forfait') ?></strong>
-                                <?php foreach ($fields as $key => $label):
-                                    if (!empty($forfait[$key]) && is_numeric($forfait[$key])):
-                                ?>
-                                <p style="margin:6px 0;">
-                                    <label>
-                                             <input type="radio" 
-                                                 name="forfait_option" 
-                                                 value="<?= $key ?>|<?= $forfait['idtarifCours'] ?>" 
-                                                 data-price="<?= esc($forfait[$key]) ?>">
-                                        <?= $label ?> (+<?= esc(number_format($forfait[$key],2)) ?> €)
-                                    </label>
-                                </p>
-                                <?php endif; endforeach; ?>
+                                <?php foreach ($groups as $group): ?>
+                                    <div style="margin-top:6px;text-align:left">
+                                        <em><?= $group['label'] ?></em>
+                                        <?php foreach ($group['keys'] as $key => $label):
+                                            if (!empty($forfait[$key]) && is_numeric($forfait[$key])):
+                                        ?>
+                                                <p style="margin:6px 0;">
+                                                    <label>
+                                                        <input type="radio"
+                                                            name="forfait_option"
+                                                            value="<?= $key ?>|<?= $forfait['idtarifCours'] ?>"
+                                                            data-price="<?= esc($forfait[$key]) ?>">
+                                                        <?= $label ?> (+<?= esc(number_format($forfait[$key], 2)) ?> €)
+                                                    </label>
+                                                </p>
+                                        <?php endif;
+                                        endforeach; ?>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                             <hr>
                         <?php endforeach; ?>
@@ -122,53 +147,51 @@
 
     </div>
 
-    <p style="text-align:center;">
-        <button type="submit" class="btn">Enregistrer le cours</button>
-    </p>
+
 
 </form>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    const totalInput = document.getElementById('total_tarif');
-    const totalDisplay = document.getElementById('totalDisplay');
-    const totalDisplayForfait = document.getElementById('totalDisplayForfait');
-    const blocUnique = document.getElementById('bloc-unique');
-    const blocForfait = document.getElementById('bloc-forfait');
+        const totalInput = document.getElementById('total_tarif');
+        const totalDisplay = document.getElementById('totalDisplay');
+        const totalDisplayForfait = document.getElementById('totalDisplayForfait');
+        const blocUnique = document.getElementById('bloc-unique');
+        const blocForfait = document.getElementById('bloc-forfait');
 
-    function updateTotal() {
-        let total = 0;
-        if(document.querySelector('input[name="type_cours"]:checked').value === 'unique') {
-            document.querySelectorAll('#bloc-unique input[type=radio][data-price]').forEach(el => {
-                if(el.checked) total = parseFloat(el.dataset.price);
-            });
-            totalDisplay.textContent = total + ' €';
-        } else {
-            total = 0;
-            document.querySelectorAll('#bloc-forfait input[type=radio]:checked').forEach(el => {
-                total = parseFloat(el.dataset.price) || total;
-            });
-            totalDisplayForfait.textContent = total + ' €';
+        function updateTotal() {
+            let total = 0;
+            if (document.querySelector('input[name="type_cours"]:checked').value === 'unique') {
+                document.querySelectorAll('#bloc-unique input[type=radio][data-price]').forEach(el => {
+                    if (el.checked) total = parseFloat(el.dataset.price);
+                });
+                totalDisplay.textContent = total + ' €';
+            } else {
+                total = 0;
+                document.querySelectorAll('#bloc-forfait input[type=radio]:checked').forEach(el => {
+                    total = parseFloat(el.dataset.price) || total;
+                });
+                totalDisplayForfait.textContent = total + ' €';
+            }
+            totalInput.value = total;
         }
-        totalInput.value = total;
-    }
 
-    // toggle blocs
-    document.querySelectorAll('input[name="type_cours"]').forEach(el => {
-        el.addEventListener('change', () => {
-            blocUnique.style.display = el.value === 'unique' ? 'block' : 'none';
-            blocForfait.style.display = el.value === 'forfait' ? 'block' : 'none';
-            updateTotal();
+        // toggle blocs
+        document.querySelectorAll('input[name="type_cours"]').forEach(el => {
+            el.addEventListener('change', () => {
+                blocUnique.style.display = el.value === 'unique' ? 'block' : 'none';
+                blocForfait.style.display = el.value === 'forfait' ? 'block' : 'none';
+                updateTotal();
+            });
         });
+
+        document.querySelectorAll('#bloc-unique input').forEach(el => el.addEventListener('change', updateTotal));
+        document.querySelectorAll('#bloc-forfait input[type=radio]').forEach(el => el.addEventListener('change', updateTotal));
+
+        updateTotal();
+
     });
-
-    document.querySelectorAll('#bloc-unique input').forEach(el => el.addEventListener('change', updateTotal));
-    document.querySelectorAll('#bloc-forfait input[type=radio]').forEach(el => el.addEventListener('change', updateTotal));
-
-    updateTotal();
-
-});
 </script>
 
 <?= $this->endSection() ?>

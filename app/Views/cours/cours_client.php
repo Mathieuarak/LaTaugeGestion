@@ -74,7 +74,14 @@
                 <td>
                     <?php
                         $field = $f['optionField'] ?? null;
-                        if ($field && strpos($field, '10') !== false) {
+                        // Determine steps depending on the option field
+                        if ($field && (strpos($field, 'travailCheval1') !== false || $field === 'travailCheval1')) {
+                            // travail cheval 1 = once per month -> 4 checkboxes
+                            $steps = 4;
+                        } elseif ($field && (strpos($field, 'travailCheval2') !== false || $field === 'travailCheval2')) {
+                            // travail cheval 2 = twice per month -> 8 checkboxes
+                            $steps = 8;
+                        } elseif ($field && strpos($field, '10') !== false) {
                             $steps = 10;
                         } elseif ($field && strpos($field, '5') !== false) {
                             $steps = 5;

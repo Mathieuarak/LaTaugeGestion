@@ -229,31 +229,26 @@ class Cours extends BaseController
                 return redirect()->back()->with('error', 'Veuillez sélectionner une option');
             }
 
-            // Le format est "champ|idTarif"
             list($fieldChoisi, $tarifId) = explode('|', $forfaitOption);
 
             $coursForfaitModel = new CoursForfaitModel();
             $liaisonModel      = new CourForfaitTarifCourForfaitModel();
             $tarifModel        = new TarifCourForfaitModel();
 
-            // Récupérer la ligne de tarif
             $tarifRow = $tarifModel->find($tarifId);
 
             if (!$tarifRow || !isset($tarifRow[$fieldChoisi])) {
                 return redirect()->back()->with('error', 'Erreur tarif');
             }
 
-            // Prix final = prix de l'option choisie
             $prixFinal = floatval($tarifRow[$fieldChoisi]);
 
-            // Créer le forfait
             $idcoursFor = $coursForfaitModel->insert([
                 'clients_idclients' => $clientId,
                 'description'       => $description,
                 'dateAjout'         => date('Y-m-d')
             ]);
 
-            // Tous les champs possibles
             $fields = [
                 'tarifCoursCollec10',
                 'tarifCoursDuo10',
@@ -265,7 +260,6 @@ class Cours extends BaseController
                 'travailCheval2'
             ];
 
-            // Créer la ligne pivot : 0 pour tous, 1 pour l'option choisie
             $dataOptions = [
                 'coursForfait_idcoursfor'       => $idcoursFor,
                 'tarifCourForfait_idtarifCours' => $tarifId,
@@ -345,7 +339,6 @@ class Cours extends BaseController
             $coursForfaitModel       = new CoursForfaitModel();
             $tarifForfaitModel       = new TarifCourForfaitModel();
             $liaisonForfaitModel     = new CourForfaitTarifCourForfaitModel();
-
 
             $forfait = $coursForfaitModel->find($id);
 
