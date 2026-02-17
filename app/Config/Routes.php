@@ -93,9 +93,7 @@ $routes->post('cours-forfait-create', 'CoursForfaitController::store', ['as' => 
 $routes->get('cours-forfait-modifier-(:num)', 'CoursForfaitController::edit/$1', ['as' => 'cours_forfait_modifier']);
 $routes->post('cours-forfait-update-(:num)', 'CoursForfaitController::update/$1', ['as' => 'cours_forfait_update']);
 $routes->post('cours-forfait-supprimer-(:num)', 'CoursForfaitController::delete/$1', ['as' => 'cours_forfait_supprimer']);
-// Toggle paiement d'un forfait
 $routes->post('cours-forfait-toggle-paye/(:num)', 'Cours::togglePayeForfait/$1', ['as' => 'cours_forfait_toggle_paye']);
-// Update stade (progress) for a forfait via AJAX
 $routes->post('cours/updateStade/(:num)', 'Cours::updateStade/$1', ['as' => 'cours_update_stade']);
 
 
@@ -110,4 +108,6 @@ $routes->post('cours-regulier-create', 'CoursRegController::store', ['as' => 'co
 $routes->get('cours-regulier-modifier-(:num)', 'CoursRegController::edit/$1', ['as' => 'cours_regulier_modifier']);
 $routes->post('cours-regulier-update-(:num)', 'CoursRegController::update/$1', ['as' => 'cours_regulier_update']);
 $routes->post('cours-regulier-supprimer-(:num)', 'CoursRegController::delete/$1', ['as' => 'cours_regulier_supprimer']);
+
+service('auth')->routes($routes);
 
