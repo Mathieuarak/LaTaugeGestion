@@ -17,7 +17,7 @@
 
 <body>
     
-    <nav style="display: flex; align-items: center;">
+    <nav style="display: flex; align-items: center; justify-content: space-between;">
         <a href="<?= base_url('index.php') ?>" style="margin-right: 30px; flex-shrink: 0;">
             <img src="<?= base_url('p.jpg') ?>" alt="Logo" style="height: 80px;">
         </a>
@@ -26,6 +26,9 @@
             <li><a href="<?= base_url('liste_clients') ?>">Liste des clients</a></li>
             <li><a href="<?= base_url('cours') ?>">Cours</a></li>
         </ul>
+        <a href="<?= base_url('logout') ?>" style="padding: 10px 20px; background: #dc3545; color: white; text-decoration: none; border-radius: 5px; font-weight: 600; margin-left: 20px;">
+            Déconnexion
+        </a>
     </nav>
 
     <?= $this->renderSection('contenu') ?>
