@@ -1,93 +1,60 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('contenu') ?>
 
-<style>
-    .cheval-card {
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 30px;
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        font-family: Arial, sans-serif;
-    }
+<section class="container my-4" style="max-width: 720px;">
 
-    .cheval-card h1 {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #333;
-        font-size: 24px;
-    }
-
-    .cheval-info {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        row-gap: 15px;
-        column-gap: 15px;
-        font-size: 16px;
-    }
-
-    .cheval-info span {
-        font-weight: bold;
-        color: #555;
-        text-align: right;
-        padding-right: 10px;
-    }
-
-    .cheval-info p {
-        margin: 0;
-        color: #222;
-    }
-
-    /* Responsive */
-    @media(max-width: 500px) {
-        .cheval-info {
-            grid-template-columns: 1fr;
-        }
-
-        .cheval-info span {
-            text-align: left;
-            padding-right: 0;
-        }
-    }
-</style>
-
-<div class="cheval-card">
-    <h1>Informations du cheval</h1>
-
-    <div class="cheval-info">
-
-        <span>Client :</span>
-        <p><?= esc($client['nom'] . ' ' . $client['prenom']) ?></p>
-
-        <span>Nom :</span>
-        <p><?= esc($cheval['nom']) ?></p>
-
-        <span>Numéro Sire :</span>
-        <p><?= esc($cheval['numSire']) ?></p>
-
-        <span>Date de naissance :</span>
-        <p><?= esc($cheval['dateNaissance']) ?></p>
-
-        <span>Date d'arrivée :</span>
-        <p><?= esc($cheval['dateArrivee']) ?></p>
-
-        <span>Dernier vaccin :</span>
-        <p><?= esc($cheval['vaccin']) ?></p>
-        
-        <span>Prix pension :</span>
-        <p>
-            <?php
-                $price = null;
-                if (!empty($tarifs_cheval) && isset($tarifs_cheval['totalTarif'])) {
-                    $price = $tarifs_cheval['totalTarif'];
-                } elseif (!empty($tarif) && isset($tarif['tarifBase'])) {
-                    $price = $tarif['tarifBase'];
-                }
-            ?>
-            <?= $price !== null ? esc(number_format((float) $price, 2, ',', ' ')) . ' €' : '—' ?>
-        </p>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="m-0">Informations du cheval</h1>
+        <a href="javascript:history.back()" class="btn btn-secondary">← Retour</a>
     </div>
-</div>
+
+    <!-- Card infos cheval -->
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <tbody>
+                <tr>
+                    <td style="width:35%; font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Client</td>
+                    <td><?= esc($client['nom'] . ' ' . $client['prenom']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Nom</td>
+                    <td><?= esc($cheval['nom']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Numéro SIRE</td>
+                    <td><?= esc($cheval['numSire']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Date de naissance</td>
+                    <td><?= esc($cheval['dateNaissance']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Date d'arrivée</td>
+                    <td><?= esc($cheval['dateArrivee']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Dernier vaccin</td>
+                    <td><?= esc($cheval['vaccin']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Prix pension</td>
+                    <td>
+                        <?php
+                            $price = null;
+                            if (!empty($tarifs_cheval) && isset($tarifs_cheval['totalTarif'])) {
+                                $price = $tarifs_cheval['totalTarif'];
+                            } elseif (!empty($tarif) && isset($tarif['tarifBase'])) {
+                                $price = $tarif['tarifBase'];
+                            }
+                        ?>
+                        <?= $price !== null ? esc(number_format((float) $price, 2, ',', ' ')) . ' €' : '<span style="opacity:0.4">—</span>' ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
 
 <?= $this->endSection() ?>

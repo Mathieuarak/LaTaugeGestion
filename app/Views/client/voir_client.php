@@ -1,104 +1,68 @@
 <?= $this->extend('layout') ?>
-
 <?= $this->section('contenu') ?>
 
-<style>
-    .client-card {
-        max-width: 600px;
-        margin: 40px auto;
-        padding: 30px;
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        font-family: Arial, sans-serif;
-    }
+<section class="container my-4" style="max-width: 720px;">
 
-    .client-card h1 {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #333;
-    }
-
-    .horse-section h2 {
-        color: #000;
-    }
-
-    .client-info {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        row-gap: 15px;
-        column-gap: 10px;
-    }
-
-    .client-info span {
-        font-weight: bold;
-        color: #555;
-    }
-
-    .client-info p {
-        margin: 0;
-        color: #222;
-    }
-
-    .horse-section {
-        margin-top: 30px;
-    }
-
-    .horse-list {
-        display: grid;
-        grid-template-columns: 1fr;
-        row-gap: 12px;
-        margin-top: 12px;
-    }
-
-    .horse-item {
-        padding: 14px;
-        background: #f8f9fb;
-        border-radius: 8px;
-        border: 1px solid #eef2f7;
-    }
-
-    .horse-item h3 {
-        margin: 0 0 6px 0;
-        color: #222;
-        font-size: 1.05rem;
-    }
-</style>
-
-<div class="client-card">
-    <h1>Informations du client</h1>
-
-    <div class="client-info">
-        <span>Nom :</span>
-        <p><?= esc($client['nom']) ?></p>
-
-        <span>Prénom :</span>
-        <p><?= esc($client['prenom']) ?></p>
-
-        <span>Adresse postale :</span>
-        <p><?= esc($client['adressePost']) ?></p>
-
-        <span>Adresse mail :</span>
-        <p><?= esc($client['adresseMail']) ?></p>
-
-        <span>Téléphone :</span>
-        <p><?= esc($client['tel']) ?></p>
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="m-0">Informations du client</h1>
+        <a href="javascript:history.back()" class="btn btn-secondary">← Retour</a>
     </div>
-</div>
-<div class="horse-section client-card">
-    <h2>Chevaux affectés</h2>
 
-    <?php if (! empty($chevaux) && is_array($chevaux)): ?>
-        <div class="horse-list">
-            <?php foreach ($chevaux as $cheval): ?>
-                <div class="horse-item">
-                    <h3><?= esc($cheval['nom'] ?? ($cheval['nom_cheval'] ?? '—')) ?> <?php if (!empty($cheval['numSire'])): ?><small style="font-weight:normal;color:#666">(SIRE: <?= esc($cheval['numSire']) ?>)</small><?php endif; ?></h3>
-                </div>
-            <?php endforeach; ?>
+    <!-- Card infos client -->
+    <div class="table-responsive mb-4">
+        <table class="table align-middle mb-0">
+            <tbody>
+                <tr>
+                    <td style="width:35%; font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Nom</td>
+                    <td><?= esc($client['nom']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Prénom</td>
+                    <td><?= esc($client['prenom']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Adresse postale</td>
+                    <td><?= esc($client['adressePost']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Adresse mail</td>
+                    <td><?= esc($client['adresseMail']) ?></td>
+                </tr>
+                <tr>
+                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Téléphone</td>
+                    <td><?= esc($client['tel']) ?></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Chevaux affectés -->
+    <h2 class="mb-3">Chevaux affectés</h2>
+
+    <?php if (!empty($chevaux) && is_array($chevaux)): ?>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Numéro SIRE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($chevaux as $cheval): ?>
+                        <tr>
+                            <td><?= esc($cheval['nom'] ?? ($cheval['nom_cheval'] ?? '—')) ?></td>
+                            <td><?= !empty($cheval['numSire']) ? esc($cheval['numSire']) : '<span style="opacity:0.4">—</span>' ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     <?php else: ?>
-        <p>Aucun cheval affecté à ce client.</p>
+        <p class="text-center" style="opacity:0.6; padding: 24px 0;">Aucun cheval affecté à ce client.</p>
     <?php endif; ?>
-</div>
+
+</section>
 
 <?= $this->endSection() ?>
