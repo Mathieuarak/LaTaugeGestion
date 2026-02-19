@@ -287,6 +287,19 @@ button:not(.navbar-toggler) {
     align-items: center;
 }
 
+/* Wrapper glassmorphism pour les formulaires */
+form,
+.form-wrapper,
+.form-glass {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow-md);
+}
+
 input[type="text"],
 input[type="search"],
 input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]),
@@ -315,10 +328,10 @@ textarea:focus {
    Table – Glass Card
    =============================== */
 .table-glass-wrapper {
-    background: rgba(255, 255, 255, 0.10);
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.22);
     border-radius: var(--radius);
     overflow: hidden;
     box-shadow: var(--shadow-md);
@@ -372,6 +385,75 @@ tbody td {
 .table > :not(caption) > * > * {
     background-color: transparent !important;
     color: rgba(255,255,255,0.92);
+}
+
+/* table-responsive hérite du flou */
+.table-responsive {
+    background: rgba(255, 255, 255, 0.13);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+}
+
+/* ===============================
+   Boutons outline Bootstrap → glassmorphism lisible
+   =============================== */
+.btn-outline-primary {
+    background: rgba(39, 75, 154, 0.45) !important;
+    border: 1px solid rgba(100, 149, 255, 0.6) !important;
+    color: #a8c4ff !important;
+    backdrop-filter: blur(6px);
+    font-weight: 600;
+}
+.btn-outline-primary:hover {
+    background: rgba(39, 75, 154, 0.80) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(39, 75, 154, 0.5);
+}
+
+.btn-outline-warning {
+    background: rgba(160, 100, 0, 0.40) !important;
+    border: 1px solid rgba(255, 193, 7, 0.65) !important;
+    color: #ffd970 !important;
+    backdrop-filter: blur(6px);
+    font-weight: 600;
+}
+.btn-outline-warning:hover {
+    background: rgba(160, 100, 0, 0.75) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(160, 100, 0, 0.5);
+}
+
+.btn-outline-danger {
+    background: rgba(160, 30, 30, 0.40) !important;
+    border: 1px solid rgba(220, 80, 80, 0.65) !important;
+    color: #ff9a9a !important;
+    backdrop-filter: blur(6px);
+    font-weight: 600;
+}
+.btn-outline-danger:hover {
+    background: rgba(160, 30, 30, 0.75) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(160, 30, 30, 0.5);
+}
+
+.btn-outline-secondary {
+    background: rgba(255,255,255,0.12) !important;
+    border: 1px solid rgba(255,255,255,0.40) !important;
+    color: rgba(255,255,255,0.85) !important;
+    backdrop-filter: blur(6px);
+    font-weight: 600;
+}
+.btn-outline-secondary:hover {
+    background: rgba(255,255,255,0.25) !important;
+    color: #fff !important;
+    transform: translateY(-2px);
 }
 
 /* ===============================
@@ -512,4 +594,80 @@ tbody td {
     body { font-size: 15px; }
     .btn { padding: 9px 16px; font-size: 0.85rem; }
     h1 { font-size: 1.5rem; }
+}
+
+/* ===============================
+   Fixes page Cours
+   =============================== */
+
+/* Formulaires inline dans les tableaux → pas de fond/padding/border */
+td form,
+td form.d-inline {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    display: inline !important;
+}
+
+/* Checkbox "Payé" dans les tableaux */
+td .form-check-input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(255,255,255,0.15) !important;
+    border: 2px solid rgba(255,255,255,0.5) !important;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0 !important;
+    backdrop-filter: none;
+    box-shadow: none !important;
+}
+td .form-check-input[type="checkbox"]:checked {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='white' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'/%3E%3C/svg%3E") !important;
+    background-size: 14px !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+td .form-check-input[type="checkbox"]:hover {
+    border-color: rgba(255,255,255,0.9) !important;
+    background: rgba(255,255,255,0.25) !important;
+}
+
+/* Stade checkboxes */
+.stade-container .stade-checkbox.form-check-input {
+    width: 18px !important;
+    height: 18px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background: rgba(255,255,255,0.15) !important;
+    border: 1.5px solid rgba(255,255,255,0.4) !important;
+    border-radius: 4px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+.stade-container .stade-checkbox.form-check-input:checked {
+    background: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    background-image: none !important;
+}
+
+/* thead table-light → garder notre style sombre */
+.table thead.table-light th,
+.table thead.table-light {
+    background: rgba(9, 29, 67, 0.60) !important;
+    color: rgba(255,255,255,0.95) !important;
+    border-color: transparent !important;
 }

@@ -94,7 +94,7 @@
 
         /* Glassmorphism */
         background: rgba(11, 46, 107, 0.45);
-        backdrop-filter: blur(20px) saturate(160%);
+        backdrop-filter: blur(50px) saturate(200%);
         -webkit-backdrop-filter: blur(20px) saturate(160%);
         border: 1px solid rgba(255, 255, 255, 0.22);
 

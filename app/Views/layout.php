@@ -22,7 +22,7 @@
     <div class="container">
 
         <a class="navbar-brand" href="<?= base_url('index.php') ?>">
-            <img src="<?= base_url('c.jpg') ?>" alt="Logo" height="40">
+            <img src="<?= base_url('p.jpg') ?>" alt="Logo" height="40">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
