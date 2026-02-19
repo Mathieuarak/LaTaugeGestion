@@ -11,42 +11,46 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="<?= base_url('css.css') ?>?v=<?= time() ?>">
-    <link rel="stylesheet" href="<?= base_url('menu.css') ?>?v=<?= time() ?>">
-    <link rel="stylesheet" href="<?= base_url('ajoutcss.css') ?>?v=<?= time() ?>">
+    <link rel="stylesheet" href="<?= base_url('nouveaucss.css') ?>?v=<?= time() ?>">
 
 </head>
-
-<script>
-    function toggleMenu() {
-        document.querySelector('.main-nav').classList.toggle('active');
-    }
-</script>
 
 
 <body>
 
-    <nav class="nav-wrap">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container">
 
-        <div class="brand">
-            <a href="<?= base_url('index.php') ?>">
-                <img src="<?= base_url('p.jpg') ?>" alt="Logo">
-            </a>
+        <a class="navbar-brand" href="<?= base_url('index.php') ?>">
+            <img src="<?= base_url('c.jpg') ?>" alt="Logo" height="40">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url('chevaux_liste') ?>">Liste des chevaux</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url('liste_clients') ?>">Liste des clients</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url('cours') ?>">Cours</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary ms-lg-3" href="<?= base_url('logout') ?>">
+                        Déconnexion
+                    </a>
+                </li>
+            </ul>
         </div>
 
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </div>
+</nav>
 
-        <ul class="main-nav">
-            <li><a href="<?= base_url('chevaux_liste') ?>">Liste des chevaux</a></li>
-            <li><a href="<?= base_url('liste_clients') ?>">Liste des clients</a></li>
-            <li><a href="<?= base_url('cours') ?>">Cours</a></li>
-            <li class="push">
-                <a href="<?= base_url('logout') ?>" class="primary">Déconnexion</a>
-            </li>
-        </ul>
-
-
-    </nav>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

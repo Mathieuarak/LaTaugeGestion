@@ -2,33 +2,7 @@
 <?= $this->section('contenu') ?>
 
 <style>
-    :root {
-        --primary: #2f2966;       /* Indigo clair */
-        --primary-dark: #2b2d85;  /* Indigo foncé */
-        --text: #ffffff;           /* Texte blanc pour contraste */
-        --muted: rgba(156, 184, 216, 0.75);
-        --transition: 200ms cubic-bezier(0.2, 0.9, 0.3, 1);
-    }
-
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
-
-    html {
-        height: 100%;
-        -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-        background: url('<?= base_url("cheche.jpg") ?>') no-repeat center center / cover fixed;
-        min-height: 100vh;
-        color: var(--text);
-        font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, -apple-system;
-        line-height: 1.6;
-        padding: 24px 16px;
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@400;500;600;700&display=swap');
 
     /* ===============================
        Container principal
@@ -37,50 +11,67 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start;
-        min-height: 60vh;
-        gap: 60px;
-        padding: 100px 20px 60px;
-        background: transparent; /* PLUS DE FOND BLANC */
+        justify-content: center;
+        min-height: calc(100vh - 80px); /* 80px = hauteur navbar */
+        gap: 56px;
+        padding: 60px 20px;
     }
 
+    /* ===============================
+       Titre
+       =============================== */
     .latauge-row {
-        width: 100%;
         text-align: center;
-        max-width: 900px;
     }
 
     .latauge-row h1 {
-        font-size: 4.5rem; /* Agrandi le titre */
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: clamp(2.8rem, 7vw, 5.5rem);
         font-weight: 900;
-        color: var(--text);
-        letter-spacing: -1px;
-        line-height: 1.2;
-        margin-bottom: 16px;
-        text-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
-        animation: slideDownTitle 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        color: #ffffff;
+        letter-spacing: -1.5px;
+        line-height: 1.15;
+        margin-bottom: 0;
+        text-shadow: 0 6px 32px rgba(0, 0, 0, 0.55);
+        animation: slideDownTitle 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
     }
 
-    .latauge-row h1::after {
-        content: '';
-        display: block;
-        width: 100px; /* légèrement plus large que le titre */
-        height: 4px;
-        background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    .latauge-row .subtitle {
+        font-family: 'DM Sans', sans-serif;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.65);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        margin-top: 14px;
+        animation: fadeIn 1s ease 0.4s both;
+    }
+
+    /* Trait décoratif sous le titre */
+    .title-line {
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
         border-radius: 2px;
         margin: 20px auto 0;
-        animation: expandLine 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
-        opacity: 0;
+        animation: expandLine 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s forwards;
     }
 
     @keyframes slideDownTitle {
-        from { opacity: 0; transform: translateY(-40px); }
-        to { opacity: 1; transform: translateY(0); }
+        from { opacity: 0; transform: translateY(-50px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
-
     @keyframes expandLine {
         from { width: 0; opacity: 0; }
-        to { width: 100px; opacity: 1; }
+        to   { width: 120px; opacity: 1; }
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUpBtn {
+        from { opacity: 0; transform: translateY(50px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ===============================
@@ -88,103 +79,137 @@
        =============================== */
     .buttons-container {
         display: flex;
-        gap: 24px;
+        gap: 20px;
         width: 100%;
-        max-width: 900px;
+        max-width: 860px;
         justify-content: center;
         flex-wrap: wrap;
     }
 
     .latauge-btn {
         flex: 1;
-        min-width: 240px;
-        padding: 28px 40px;
-        border-radius: 14px;
-        border: 2px solid var(--primary);
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        min-width: 220px;
+        padding: 30px 36px;
+        border-radius: 16px;
+
+        /* Glassmorphism */
+        background: rgba(11, 46, 107, 0.45);
+        backdrop-filter: blur(20px) saturate(160%);
+        -webkit-backdrop-filter: blur(20px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+
         color: #ffffff;
-        font-size: 1.1rem;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 1.05rem;
         font-weight: 700;
+        letter-spacing: 0.3px;
         cursor: pointer;
-        transition: all var(--transition);
-        box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+        transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.30);
+
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 12px;
+        gap: 14px;
         position: relative;
         overflow: hidden;
-        animation: slideUpBtn 0.8s cubic-bezier(0.34,1.56,0.64,1) 0.2s backwards;
+
+        animation: slideUpBtn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
     }
 
-    @keyframes slideUpBtn {
-        from { opacity: 0; transform: translateY(40px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+    /* Décalage des animations */
+    .latauge-btn:nth-child(1) { animation-delay: 0.15s; }
+    .latauge-btn:nth-child(2) { animation-delay: 0.28s; }
+    .latauge-btn:nth-child(3) { animation-delay: 0.40s; }
 
+    /* Shimmer au hover */
     .latauge-btn::before {
         content: '';
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at center, rgba(255,255,255,0.2), transparent 70%);
+        background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
         opacity: 0;
-        transition: opacity var(--transition);
+        transition: opacity 250ms ease;
     }
-
     .latauge-btn:hover::before { opacity: 1; }
 
     .latauge-btn:hover {
-        transform: translateY(-6px) scale(1.03);
-        box-shadow: 0 24px 60px rgba(0,0,0,0.45);
+        transform: translateY(-8px) scale(1.02);
+        background: rgba(11, 46, 107, 0.70);
+        border-color: rgba(255, 255, 255, 0.40);
+        box-shadow: 0 20px 56px rgba(0, 0, 0, 0.40),
+                    0 0 0 1px rgba(255,255,255,0.12);
+    }
+
+    .latauge-btn:active {
+        transform: translateY(-2px) scale(0.99);
     }
 
     .latauge-btn.full-width {
         flex: 0 0 100%;
-        max-width: 400px;
+        max-width: 380px;
         margin: 0 auto;
     }
 
     .btn-icon {
-        font-size: 1.4em;
+        font-size: 2rem;
+        line-height: 1;
+        filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+        transition: transform 250ms ease;
+    }
+    .latauge-btn:hover .btn-icon {
+        transform: scale(1.15) translateY(-2px);
+    }
+
+    .btn-label {
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: 0.3px;
     }
 
     /* ===============================
        Responsive
        =============================== */
     @media (max-width: 768px) {
-        .latauge-container { padding: 60px 20px; gap: 40px; }
-        .latauge-row h1 { font-size: 3rem; }
-        .buttons-container { flex-direction: column; }
-        .latauge-btn { width: 100%; padding: 24px 32px; }
+        .latauge-container { gap: 40px; padding: 40px 16px; }
+        .buttons-container { flex-direction: column; align-items: center; }
+        .latauge-btn { width: 100%; max-width: 420px; padding: 24px 28px; flex-direction: row; }
+        .latauge-btn.full-width { max-width: 420px; flex-direction: row; }
     }
 
     @media (max-width: 480px) {
-        .latauge-row h1 { font-size: 2.5rem; }
-        .latauge-btn { font-size: 1rem; padding: 20px 24px; }
+        .latauge-btn { font-size: 0.95rem; padding: 20px 22px; }
+        .btn-icon { font-size: 1.5rem; }
     }
 </style>
 
 <div class="latauge-container">
+
     <div class="latauge-row">
         <h1>La Tauge Gestion</h1>
+        <div class="title-line"></div>
     </div>
 
     <div class="buttons-container">
+
         <button class="latauge-btn" onclick="window.location.href='client_ajout'">
             <span class="btn-icon">➕</span>
-            Ajouter un client
+            <span class="btn-label">Ajouter un client</span>
         </button>
 
         <button class="latauge-btn" onclick="window.location.href='ajout_cheval'">
             <span class="btn-icon">🐴</span>
-            Ajouter un cheval
+            <span class="btn-label">Ajouter un cheval</span>
         </button>
 
         <button class="latauge-btn full-width" onclick="window.location.href='ajout_cours'">
             <span class="btn-icon">🏇</span>
-            Ajouter un cours
+            <span class="btn-label">Ajouter un cours</span>
         </button>
+
     </div>
+
 </div>
 
 <?= $this->endSection() ?>

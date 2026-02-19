@@ -1,42 +1,43 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('contenu') ?>
 
-<section>
+<div class="container-fluid">
 
-    <h1 style="display: flex; justify-content: space-between; align-items: center;">
-        Clients avec cours ou forfaits
-        <button type="button" class="btn" onclick="window.location.href='<?= base_url('ajout_cours') ?>'">
-            Ajouter un cours
-        </button>
-    </h1>
+    <h1 class="h3 mb-2">Clients avec cours ou forfaits</h1>
+
+    <button type="button" class="btn btn-primary mb-3" onclick="window.location.href='<?= base_url('ajout_cours') ?>'">
+        Ajouter un cours
+    </button>
 
     <p>Nombre de clients : <strong><?= count($clients) ?></strong></p>
 
-    <?php
-    $table = new \CodeIgniter\View\Table();
-    $table->setHeading('Client', 'Cours', 'Forfaits', 'Total', 'Action');
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Client</th>
+                    <th>Total cours</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($clients as $client): 
+                    $total = $client['nbCours'] + $client['nbForfaits'];
+                    ?>
+                    <tr>
+                        <td><?= esc($client['nom'] . ' ' . $client['prenom']) ?></td>
+                        <td><?= esc($total) ?></td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-info" onclick="window.location.href='<?= route_to('cours_client', $client['idclients']) ?>'">
+                                Voir
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 
-    foreach ($clients as $client) {
-
-        $total = $client['nbCours'] + $client['nbForfaits'];
-
-        $voirCours = '<button type="button" class="btn" onclick="window.location.href=\'' 
-            . route_to('cours_client', $client['idclients']) . '\'">
-                        Voir
-                     </button>';
-
-        $table->addRow(
-            esc($client['nom'] . ' ' . $client['prenom']),
-            $client['nbCours'],
-            $client['nbForfaits'],
-            $total,
-            $voirCours
-        );
-    }
-    ?>
-
-    <?= $table->generate(); ?>
-
-</section>
+</div>
 
 <?= $this->endSection() ?>

@@ -1,94 +1,144 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('contenu') ?>
 
-<h1>Ajouter un client</h1>
+<div class="container-fluid">
 
-<?php if (session()->getFlashdata('errors')) : ?>
-    <div class="errors" style="color: red; margin-bottom: 1rem;">
-        <?php foreach (session()->getFlashdata('errors') as $error) : ?>
-            <div><?= esc($error) ?></div>
-        <?php endforeach ?>
-    </div>
-<?php endif ?>
+    <h1 class="h3 mb-4">Ajouter un client</h1>
 
-<form action="<?= url_to('client_create') ?>" method="post">
-    <?= csrf_field() ?>
+    <!-- Affichage des erreurs -->
+    <?php if (session()->getFlashdata('errors')) : ?>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <?php foreach (session()->getFlashdata('errors') as $error) : ?>
+                    <li><?= esc($error) ?></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    <?php endif ?>
 
-    <div class="form-grid" style="display:flex;gap:24px;align-items:flex-start">
+    <form action="<?= url_to('client_create') ?>" method="post">
+        <?= csrf_field() ?>
 
-        <!-- PARTIE GAUCHE : FORMULAIRE -->
-        <div class="form-main" style="flex:1">
+        <div class="row">
 
-            <p>
-                <label for="nom">Nom :</label>
-                <input type="text" name="nom" id="nom" value="<?= esc(old('nom')) ?>">
-            </p>
+            <!-- COLONNE PRINCIPALE -->
+            <div class="col-12 col-lg-8">
 
-            <p>
-                <label for="prenom">Prénom :</label>
-                <input type="text" name="prenom" id="prenom" value="<?= esc(old('prenom')) ?>">
-            </p>
+                <div class="card shadow-sm">
+                    <div class="card-body">
 
-            <p>
-                <label for="adressePost">Adresse postale :</label>
-                <input type="text" name="adressePost" id="adressePost" value="<?= esc(old('adressePost')) ?>">
-            </p>
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text"
+                                name="nom"
+                                id="nom"
+                                class="form-control"
+                                value="<?= esc(old('nom')) ?>"
+                                required>
+                        </div>
 
-            <p>
-                <label for="adresseMail">Adresse mail :</label>
-                <input type="email" name="adresseMail" id="adresseMail" value="<?= esc(old('adresseMail')) ?>" required>
-            </p>
+                        <!-- Prénom -->
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text"
+                                name="prenom"
+                                id="prenom"
+                                class="form-control"
+                                value="<?= esc(old('prenom')) ?>"
+                                required>
+                        </div>
 
-            <p>
-                <label for="tel">Téléphone :</label>
-                <?php
-                $rawTel = preg_replace('/\D+/', '', old('tel') ?? '');
-                $formattedTel = '';
-                if (strlen($rawTel) === 10) {
-                    $formattedTel = preg_replace('/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1 / $2 / $3 / $4 / $5', $rawTel);
-                } else {
-                    $formattedTel = old('tel');
-                }
-                ?>
-                <input type="text" name="tel" id="tel" value="<?= esc($formattedTel) ?>" maxlength="22" placeholder="00 / 00 / 00 / 00 / 00">
-            </p>
+                        <!-- Adresse postale -->
+                        <div class="mb-3">
+                            <label for="adressePost" class="form-label">Adresse postale</label>
+                            <input type="text"
+                                name="adressePost"
+                                id="adressePost"
+                                class="form-control"
+                                value="<?= esc(old('adressePost')) ?>">
+                        </div>
 
-            <p>
-                <button type="submit">Valider</button>
-            </p>
+                        <!-- Adresse mail -->
+                        <div class="mb-3">
+                            <label for="adresseMail" class="form-label">Adresse mail</label>
+                            <input type="email"
+                                name="adresseMail"
+                                id="adresseMail"
+                                class="form-control"
+                                value="<?= esc(old('adresseMail')) ?>"
+                                required>
+                        </div>
+
+                        <!-- Téléphone -->
+                        <?php
+                        $rawTel = preg_replace('/\D+/', '', old('tel') ?? '');
+                        $formattedTel = '';
+
+                        if (strlen($rawTel) === 10) {
+                            $formattedTel = preg_replace(
+                                '/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/',
+                                '$1 / $2 / $3 / $4 / $5',
+                                $rawTel
+                            );
+                        } else {
+                            $formattedTel = old('tel');
+                        }
+                        ?>
+
+                        <div class="mb-3">
+                            <label for="tel" class="form-label">Téléphone</label>
+                            <input type="text"
+                                name="tel"
+                                id="tel"
+                                class="form-control"
+                                value="<?= esc($formattedTel) ?>"
+                                maxlength="22"
+                                placeholder="00 / 00 / 00 / 00 / 00">
+                        </div>
+
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                Valider
+                            </button>
+                            <a href="<?= base_url('liste_clients') ?>" class="btn btn-outline-secondary ms-2">
+                                Annuler
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
 
         </div>
+    </form>
 
-        <!-- PARTIE DROITE : (Optionnel si tu veux un bloc info ou tarif comme pour chevaux/cours) -->
-        <!-- Pour un client simple, tu peux laisser vide ou ajouter un résumé/infos -->
-        <!--
-        <aside class="form-tarif" style="width:340px">
-            <div class="tarif-box">
-                <h2>Résumé client</h2>
-                <p>...</p>
-            </div>
-        </aside>
-        -->
-
-    </div>
-</form>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
     const tel = document.getElementById('tel');
     if (!tel) return;
 
     tel.addEventListener('input', function(e) {
+
         let digits = e.target.value.replace(/\D/g, '');
-        if (digits.length > 10) digits = digits.slice(0, 10);
+
+        if (digits.length > 10) {
+            digits = digits.slice(0, 10);
+        }
 
         const parts = [];
+
         for (let i = 0; i < digits.length; i += 2) {
             parts.push(digits.substring(i, i + 2));
         }
 
         e.target.value = parts.join(' / ');
     });
+
 });
 </script>
 

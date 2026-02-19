@@ -1,5 +1,5 @@
 /* ===============================
-   Light & Modern stylesheet – Indigo Edition
+   Light & Modern stylesheet – Indigo Edition (Bootstrap-friendly)
    =============================== */
 
 /* ===============================
@@ -22,8 +22,8 @@
     --accent-dark: #091d43;
     --accent-light: #274b9a;
 
-    /* Danger (red -> dark blue) */
-    --danger: #0b2e6b;
+    /* Danger */
+    --danger: #d63333;
 
     --border: rgba(200, 200, 200, 0.6);
     --radius: 12px;
@@ -31,54 +31,33 @@
     --shadow-md: 0 12px 36px rgba(0, 0, 0, 0.12);
     --base-font-size: 16px;
     --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-    
 }
 
 /* ===============================
-   Base & Background
+   Body & Base
    =============================== */
-html,
-body {
-    height: 100%;
-    margin: 0;
-}
-
 body {
     background: url('<?= base_url("cheche.jpg") ?>') no-repeat center center / cover fixed;
-    min-height: 100vh;
     color: var(--text);
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', system-ui, -apple-system;
     font-size: var(--base-font-size);
     line-height: 1.6;
+    margin: 0;
     padding: 24px 16px;
 }
 
-/* ===============================
-   Titles
-   =============================== */
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
     color: var(--text-light);
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.45);
+    text-shadow: 0 4px 12px rgba(0,0,0,0.45);
 }
-
-h1 {
-    font-size: 3rem;
-    font-weight: 700;
-}
-
-h2 {
-    font-size: 2rem;
-    font-weight: 600;
-}
+h1 { font-size: 3rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 600; }
 
 /* ===============================
    Buttons
    =============================== */
-button,
 .btn,
+button,
 .latauge-btn {
     display: inline-flex;
     align-items: center;
@@ -91,41 +70,46 @@ button,
     color: #fff;
     font-weight: 600;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
+    transition: all var(--transition);
+}
+.btn:hover,
+button:hover {
+    transform: translateY(-3px) scale(1.03);
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent-light));
+    box-shadow: 0 8px 24px rgba(11, 46, 107, 0.35);
+}
+.btn-return {
+    background-color: #6c757d;
+    color: #fff;
+}
+.btn-return:hover {
+    background-color: #5a6268;
+}
+
+/* ===============================
+   Forms
+   =============================== */
+input, select, textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text);
+    font-size: 1rem;
     transition: all var(--transition);
 }
 
-.options-black,
-.options-black label,
-.options-black h2,
-.options-black p {
-    color: #000;
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(11, 46, 107, 0.2);
 }
 
-.options-black input[type="radio"] {
-    accent-color: #000;
-}
-
-.options-title {
-    color: #000;
-}
-
-.options-black,
-.options-black label,
-.options-black p {
-    color: #000;
-}
-
-.options-black input[type="radio"] {
-    accent-color: #000;
-}
-
-/* Bloc tarif commun (cheval / cours / autres) */
 .form-tarif {
     width: 340px;
+    min-height: 420px;
 }
-
 .form-tarif .tarif-box {
     border: 1px solid #ddd;
     padding: 12px;
@@ -134,7 +118,6 @@ button,
     text-align: right;
 }
 
-/* Titres et options TOUJOURS en noir */
 .form-tarif h2,
 .form-tarif .options-list,
 .form-tarif .options-list label,
@@ -142,72 +125,9 @@ button,
     color: #000;
 }
 
-/* Boutons radio / checkbox noirs */
 .form-tarif input[type="radio"],
 .form-tarif input[type="checkbox"] {
     accent-color: #000;
-}
-
-
-
-button:hover,
-.btn:hover,
-.latauge-btn:hover {
-    transform: translateY(-3px) scale(1.03);
-    background: linear-gradient(135deg, var(--accent-dark), var(--accent-light));
-    box-shadow: 0 8px 24px rgba(11, 46, 107, 0.35);
-}
-
-/* ===============================
-   Text paragraphs
-   =============================== */
-p {
-    color: var(--text-light);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-}
-
-
-/* ===============================
-   Cards / Data blocks
-   =============================== */
-.card {
-    background: var(--card);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    padding: 20px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--transition), box-shadow var(--transition);
-}
-
-.card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-md);
-}
-
-/* ===============================
-   Forms
-   =============================== */
-input,
-select,
-textarea {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    background: #ffffff;
-    color: var(--text);
-    font-size: 1rem;
-    transition: all var(--transition);
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(11, 46, 107, 0.2);
 }
 
 /* ===============================
@@ -244,7 +164,55 @@ tbody tr:hover {
 }
 
 /* ===============================
-   Alerts
+   Cards / Data blocks
+   =============================== */
+.card {
+    background: var(--card);
+    backdrop-filter: blur(8px);
+    padding: 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+}
+
+/* ===============================
+   Stade checkbox
+   =============================== */
+.stade-container {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+.stade-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    appearance: none;
+    border: 1px solid #999;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.stade-container input[type="checkbox"]:checked {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+/* ===============================
+   Paragraphs
+   =============================== */
+p {
+    color: var(--text-light);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+
+/* ===============================
+   Alerts / Messages
    =============================== */
 .alert,
 .error {
@@ -259,26 +227,13 @@ tbody tr:hover {
    Responsive
    =============================== */
 @media (max-width: 900px) {
-    h1 {
-        font-size: 2.2rem;
-    }
-
-    h2 {
-        font-size: 1.6rem;
-    }
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.6rem; }
 }
 
 @media (max-width: 560px) {
-    h1 {
-        font-size: 1.8rem;
-    }
-
-    h2 {
-        font-size: 1.4rem;
-    }
-
-    button {
-        padding: 10px 16px;
-        font-size: 0.9rem;
-    }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    button { padding: 10px 16px; font-size: 0.9rem; }
+    .form-tarif { width: 100%; min-height: auto; }
 }

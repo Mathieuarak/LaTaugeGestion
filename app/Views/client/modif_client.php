@@ -1,106 +1,115 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('contenu') ?>
 
-<h1>Modifier un client</h1>
+<div class="container-fluid">
 
-<?php if (session()->getFlashdata('errors')) : ?>
-    <div class="errors" style="color: red; margin-bottom: 1rem;">
-        <?php foreach (session()->getFlashdata('errors') as $error) : ?>
-            <div><?= esc($error) ?></div>
-        <?php endforeach ?>
-    </div>
-<?php endif ?>
+    <h1 class="h3 mb-4">Modifier un client</h1>
 
-<form action="<?= url_to('client_update', $client['idclients']) ?>" method="post">
-    <?= csrf_field() ?>
+    <!-- Affichage des erreurs -->
+    <?php if (session()->getFlashdata('errors')) : ?>
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                <?php foreach (session()->getFlashdata('errors') as $error) : ?>
+                    <li><?= esc($error) ?></li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    <?php endif ?>
 
-    <div class="form-grid" style="display:flex;gap:24px;align-items:flex-start">
+    <form action="<?= url_to('client_update', $client['idclients']) ?>" method="post">
+        <?= csrf_field() ?>
 
-        <!-- PARTIE GAUCHE : FORMULAIRE -->
-        <div class="form-main" style="flex:1">
+        <div class="row">
 
-            <p>
-                <label for="nom">Nom :</label>
-                <input
-                    type="text"
-                    name="nom"
-                    id="nom"
-                    value="<?= esc(old('nom', $client['nom'])) ?>"
-                    maxlength="15"
-                    required
-                    style="background-color: transparent; border:1px solid #ccc; padding:6px 10px; border-radius:4px; width:100%;"
-                >
-            </p>
+            <!-- COLONNE PRINCIPALE -->
+            <div class="col-12 col-lg-8">
 
-            <p>
-                <label for="prenom">Prénom :</label>
-                <input
-                    type="text"
-                    name="prenom"
-                    id="prenom"
-                    value="<?= esc(old('prenom', $client['prenom'])) ?>"
-                    maxlength="15"
-                    required
-                    style="background-color: transparent; border:1px solid #ccc; padding:6px 10px; border-radius:4px; width:100%;"
-                >
-            </p>
+                <div class="card shadow-sm">
+                    <div class="card-body">
 
-            <p>
-                <label for="adressePost">Adresse postale :</label>
-                <input
-                    type="text"
-                    name="adressePost"
-                    id="adressePost"
-                    value="<?= esc(old('adressePost', $client['adressePost'])) ?>"
-                    style="background-color: transparent; border:1px solid #ccc; padding:6px 10px; border-radius:4px; width:100%;"
-                >
-            </p>
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text"
+                                name="nom"
+                                id="nom"
+                                class="form-control"
+                                value="<?= esc(old('nom', $client['nom'])) ?>"
+                                maxlength="15"
+                                required>
+                        </div>
 
-            <p>
-                <label for="adresseMail">Adresse mail :</label>
-                <input
-                    type="email"
-                    name="adresseMail"
-                    id="adresseMail"
-                    value="<?= esc(old('adresseMail', $client['adresseMail'])) ?>"
-                    required
-                    style="background-color: transparent; border:1px solid #ccc; padding:6px 10px; border-radius:4px; width:100%;"
-                >
-            </p>
+                        <!-- Prénom -->
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text"
+                                name="prenom"
+                                id="prenom"
+                                class="form-control"
+                                value="<?= esc(old('prenom', $client['prenom'])) ?>"
+                                maxlength="15"
+                                required>
+                        </div>
 
-            <p>
-                <label for="tel">Téléphone :</label>
-                <?php
-                $raw = preg_replace('/\D+/', '', old('tel', $client['tel']));
-                $formatted = $raw;
-                if (strlen($raw) === 10) {
-                    $formatted = preg_replace(
-                        '/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/',
-                        '$1 / $2 / $3 / $4 / $5',
-                        $raw
-                    );
-                }
-                ?>
-                <input
-                    type="text"
-                    name="tel"
-                    id="tel"
-                    value="<?= esc($formatted) ?>"
-                    maxlength="22"
-                    placeholder="00 / 00 / 00 / 00 / 00"
-                    required
-                    style="background-color: transparent; border:1px solid #ccc; padding:6px 10px; border-radius:4px; width:100%;"
-                >
-            </p>
+                        <!-- Adresse postale -->
+                        <div class="mb-3">
+                            <label for="adressePost" class="form-label">Adresse postale</label>
+                            <input type="text"
+                                name="adressePost"
+                                id="adressePost"
+                                class="form-control"
+                                value="<?= esc(old('adressePost', $client['adressePost'])) ?>">
+                        </div>
 
-            <p>
-                <button type="submit" style="padding:6px 12px; border:none; background:#4CAF50; border-radius:4px; cursor:pointer;">Valider</button>
-            </p>
+                        <!-- Adresse mail -->
+                        <div class="mb-3">
+                            <label for="adresseMail" class="form-label">Adresse mail</label>
+                            <input type="email"
+                                name="adresseMail"
+                                id="adresseMail"
+                                class="form-control"
+                                value="<?= esc(old('adresseMail', $client['adresseMail'])) ?>"
+                                required>
+                        </div>
+
+                        <!-- Téléphone -->
+                        <?php
+                        $raw = preg_replace('/\D+/', '', old('tel', $client['tel']));
+                        $formatted = strlen($raw) === 10
+                            ? preg_replace('/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/', '$1 / $2 / $3 / $4 / $5', $raw)
+                            : old('tel', $client['tel']);
+                        ?>
+                        <div class="mb-3">
+                            <label for="tel" class="form-label">Téléphone</label>
+                            <input type="text"
+                                name="tel"
+                                id="tel"
+                                class="form-control"
+                                value="<?= esc($formatted) ?>"
+                                maxlength="22"
+                                placeholder="00 / 00 / 00 / 00 / 00"
+                                required>
+                        </div>
+
+                        <!-- Boutons -->
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                Valider
+                            </button>
+                            <a href="<?= base_url('liste_clients') ?>" class="btn btn-outline-secondary ms-2">
+                                Annuler
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
 
         </div>
+    </form>
 
-    </div>
-</form>
+</div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

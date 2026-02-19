@@ -1,120 +1,125 @@
 <?= $this->extend('layout') ?>
 <?= $this->section('contenu') ?>
 
-<h1>Modifier le cours</h1>
+<section class="container my-4">
 
-<form action="<?= route_to('tarif_cours_update', $cours['idcoursReg']) ?>" method="post">
+    <h1 class="mb-4">Modifier le cours</h1>
 
-<div class="form-grid" style="display:flex;gap:24px;align-items:flex-start">
+    <form action="<?= route_to('tarif_cours_update', $cours['idcoursReg']) ?>" method="post">
 
-    <div class="form-main" style="flex:1">
-        <p>
-            <label for="clients_idclients">Client :</label>
-            <select name="client" id="clients_idclients" required>
-                <option value="">-- Sélectionner un client --</option>
-                <?php foreach ($clients as $client): ?>
-                    <option value="<?= esc($client['idclients']) ?>"
-                        <?= $cours['clients_idclients']==$client['idclients']?'selected':''?>>
-                        <?= esc($client['nom'].' '.$client['prenom']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </p>
+        <div class="row g-4">
 
-        <p>
-            <label for="coursDate">Date du cours :</label>
-            <input type="date" name="coursDate" id="coursDate" value="<?= esc($cours['coursDate']) ?>" required>
-        </p>
+            <!-- Partie principale du formulaire -->
+            <div class="col-md-8">
 
-        <p>
-            <label for="description">Description :</label>
-            <input type="text" name="description" id="description" value="<?= esc($cours['description']) ?>">
-        </p>
-
-        <input type="hidden" name="idTarif" value="<?= esc($options['tarifCourReg_idtarifCourReg'] ?? '') ?>">
-
-        <p>
-            <strong>Type :</strong><br>
-            <label>
-                <input type="radio" name="type_cours" value="unique" <?= empty($cours['tarifCourForfait_idtarifCours'])?'checked':''?>>
-                Cours à l’unité
-            </label><br>
-            <label>
-                <input type="radio" name="type_cours" value="forfait" <?= !empty($cours['tarifCourForfait_idtarifCours'])?'checked':''?>>
-                Forfait
-            </label>
-        </p>
-
-    </div>
-
-    <aside class="form-tarif" style="width:340px">
-
-        <div id="bloc-unique">
-            <div class="tarif-box" style="border:1px solid #ddd;padding:12px;border-radius:6px;text-align:right;background:#fafafa">
-                <div class="total-box">
-                    <div class="total-label">Tarif du cours</div>
-                    <div id="totalDisplay" class="total-price">0 €</div>
+                <div class="mb-3">
+                    <label for="clients_idclients" class="form-label">Client :</label>
+                    <select name="client" id="clients_idclients" class="form-select" required>
+                        <option value="">-- Sélectionner un client --</option>
+                        <?php foreach ($clients as $client): ?>
+                            <option value="<?= esc($client['idclients']) ?>"
+                                <?= $cours['clients_idclients']==$client['idclients']?'selected':''?>>
+                                <?= esc($client['nom'].' '.$client['prenom']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
-                <hr>
-                <h2>Options</h2>
-                <div class="options-list">
-                    <?php
-                    $optionsCours = [
-                        'tarifCourCollectifs'=>'Cours collectif',
-                        'tarifCourADeux'=>'Cours à deux',
-                        'tarifCourParticulier'=>'Cours particulier',
-                        'tarifTravailCheval'=>'Travail du cheval'
-                    ];
-                    foreach($optionsCours as $field=>$label):
-                        $checked = !empty($options[$field]);
-                    ?>
-                        <p>
-                            <label>
-                                <input type="radio" name="option_unique" value="<?= $field ?>" data-price="<?= esc($tarifs[$field]) ?>" <?= $checked?'checked':''?>>
-                                <?= $label ?> (+<?= esc($tarifs[$field]) ?> €)
-                            </label>
-                        </p>
-                    <?php endforeach; ?>
+
+                <div class="mb-3">
+                    <label for="coursDate" class="form-label">Date du cours :</label>
+                    <input type="date" name="coursDate" id="coursDate" value="<?= esc($cours['coursDate']) ?>" class="form-control" required>
                 </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description :</label>
+                    <input type="text" name="description" id="description" value="<?= esc($cours['description']) ?>" class="form-control">
+                </div>
+
+                <input type="hidden" name="idTarif" value="<?= esc($options['tarifCourReg_idtarifCourReg'] ?? '') ?>">
+
+                <div class="mb-3">
+                    <strong>Type :</strong><br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="type_cours" id="typeUnique" value="unique" <?= empty($cours['tarifCourForfait_idtarifCours'])?'checked':''?>>
+                        <label class="form-check-label" for="typeUnique">Cours à l’unité</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="type_cours" id="typeForfait" value="forfait" <?= !empty($cours['tarifCourForfait_idtarifCours'])?'checked':''?>>
+                        <label class="form-check-label" for="typeForfait">Forfait</label>
+                    </div>
+                </div>
+
             </div>
+
+            <!-- Partie tarif -->
+            <div class="col-md-4">
+
+                <!-- Cours unique -->
+                <div id="bloc-unique" class="mb-3">
+                    <div class="card p-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tarif du cours</span>
+                            <span id="totalDisplay" class="fw-bold">0 €</span>
+                        </div>
+                        <hr>
+                        <h6>Options</h6>
+                        <?php
+                        $optionsCours = [
+                            'tarifCourCollectifs'=>'Cours collectif',
+                            'tarifCourADeux'=>'Cours à deux',
+                            'tarifCourParticulier'=>'Cours particulier',
+                            'tarifTravailCheval'=>'Travail du cheval'
+                        ];
+                        foreach($optionsCours as $field=>$label):
+                            $checked = !empty($options[$field]);
+                        ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="option_unique" value="<?= $field ?>" data-price="<?= esc($tarifs[$field]) ?>" id="<?= $field ?>" <?= $checked?'checked':''?>>
+                                <label class="form-check-label" for="<?= $field ?>"><?= $label ?> (+<?= esc($tarifs[$field]) ?> €)</label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <!-- Forfaits -->
+                <div id="bloc-forfait" style="display:none">
+                    <h6 class="mb-2">Forfaits</h6>
+                    <div class="card p-3">
+                        <?php foreach($tarifsForfait as $forfait):
+                            $prix = floatval($forfait['tarifCoursCollec10'])
+                                  + floatval($forfait['tarifCoursDuo10'])
+                                  + floatval($forfait['tarifCoursSolo10'])
+                                  + floatval($forfait['travailCheval1'])
+                                  + floatval($forfait['tarifCoursCollec5'])
+                                  + floatval($forfait['tarifCoursDuo5'])
+                                  + floatval($forfait['tarifCoursSolo5'])
+                                  + floatval($forfait['travailCheval2']);
+                            $checked = isset($cours['tarifCourForfait_idtarifCours']) && $cours['tarifCourForfait_idtarifCours']==$forfait['idtarifCours'];
+                        ?>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="forfait_id" value="<?= esc($forfait['idtarifCours']) ?>" data-price="<?= esc($prix) ?>" id="forfait<?= $forfait['idtarifCours'] ?>" <?= $checked?'checked':''?>>
+                                <label class="form-check-label" for="forfait<?= $forfait['idtarifCours'] ?>">
+                                    <?= esc($forfait['libelle'] ?? 'Forfait') ?> (+<?= esc($prix) ?> €)
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+
+                <input type="hidden" name="total_tarif" id="total_tarif" value="0">
+
+            </div>
+
         </div>
 
-        <div id="bloc-forfait" style="display:none">
-            <h2 class="options-title">Forfaits</h2>
-            <div class="tarif-box" style="border:1px solid #ddd;padding:12px;border-radius:6px;text-align:right;background:#fafafa">
-                <?php foreach($tarifsForfait as $forfait):
-                    $prix = floatval($forfait['tarifCoursCollec10'])
-                          + floatval($forfait['tarifCoursDuo10'])
-                          + floatval($forfait['tarifCoursSolo10'])
-                          + floatval($forfait['travailCheval1'])
-                          + floatval($forfait['tarifCoursCollec5'])
-                          + floatval($forfait['tarifCoursDuo5'])
-                          + floatval($forfait['tarifCoursSolo5'])
-                          + floatval($forfait['travailCheval2']);
-                    $checked = isset($cours['tarifCourForfait_idtarifCours']) && $cours['tarifCourForfait_idtarifCours']==$forfait['idtarifCours'];
-                ?>
-                    <p>
-                        <label>
-                            <input type="radio" name="forfait_id" value="<?= esc($forfait['idtarifCours']) ?>" data-price="<?= esc($prix) ?>" <?= $checked?'checked':''?>>
-                            <?= esc($forfait['libelle'] ?? 'Forfait') ?> (+<?= esc($prix) ?> €)
-                        </label>
-                    </p>
-                <?php endforeach; ?>
-            </div>
+        <div class="text-center mt-4">
+            <input type="hidden" name="redirectClient" value="<?= esc($cours['clients_idclients']) ?>">
+            <button type="submit" class="btn btn-primary">Modifier le cours</button>
         </div>
 
-        <input type="hidden" name="total_tarif" id="total_tarif" value="0">
+    </form>
 
-    </aside>
-
-</div>
-
-<p style="text-align:center;">
-    <input type="hidden" name="redirectClient" value="<?= esc($cours['clients_idclients']) ?>">
-    <button type="submit" class="btn">Modifier le cours</button>
-</p>
-
-</form>
+</section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
