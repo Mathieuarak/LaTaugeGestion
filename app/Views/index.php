@@ -84,17 +84,18 @@
         max-width: 860px;
         justify-content: center;
         flex-wrap: wrap;
+        align-items: stretch;
     }
 
     .latauge-btn {
-        flex: 1;
-        min-width: 220px;
+        flex: 0 0 240px;
+        width: 240px;
         padding: 30px 36px;
         border-radius: 16px;
 
         /* Glassmorphism */
         background: rgba(11, 46, 107, 0.45);
-        backdrop-filter: blur(50px) saturate(200%);
+        backdrop-filter: blur(20px) saturate(160%);
         -webkit-backdrop-filter: blur(20px) saturate(160%);
         border: 1px solid rgba(255, 255, 255, 0.22);
 
@@ -147,9 +148,7 @@
     }
 
     .latauge-btn.full-width {
-        flex: 0 0 100%;
-        max-width: 380px;
-        margin: 0 auto;
+        /* même taille que les autres */
     }
 
     .btn-icon {
@@ -174,8 +173,8 @@
     @media (max-width: 768px) {
         .latauge-container { gap: 40px; padding: 40px 16px; }
         .buttons-container { flex-direction: column; align-items: center; }
-        .latauge-btn { width: 100%; max-width: 420px; padding: 24px 28px; flex-direction: row; }
-        .latauge-btn.full-width { max-width: 420px; flex-direction: row; }
+        .latauge-btn { flex: 0 0 auto; width: 100%; max-width: 340px; padding: 24px 28px; flex-direction: row; }
+        .latauge-btn.full-width { width: 100%; max-width: 340px; flex-direction: row; }
     }
 
     @media (max-width: 480px) {
@@ -189,6 +188,7 @@
     <div class="latauge-row">
         <h1>La Tauge Gestion</h1>
         <div class="title-line"></div>
+        <p class="subtitle">Gestion des chevaux </p>
     </div>
 
     <div class="buttons-container">
