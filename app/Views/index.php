@@ -147,10 +147,6 @@
         transform: translateY(-2px) scale(0.99);
     }
 
-    .latauge-btn.full-width {
-        /* même taille que les autres */
-    }
-
     .btn-icon {
         font-size: 2rem;
         line-height: 1;
