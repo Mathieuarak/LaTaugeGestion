@@ -37,17 +37,21 @@ class Database extends Config
         'charset'      => 'utf8mb4',
         'DBCollat'     => 'utf8mb4_general_ci',
         'swapPre'      => '',
-        'encrypt'      => false,
+        'encrypt'      => true,
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => 3306,
+        'port'         => 16107,
         'numberNative' => false,
         'foundRows'    => false,
         'dateFormat'   => [
             'date'     => 'Y-m-d',
             'datetime' => 'Y-m-d H:i:s',
             'time'     => 'H:i:s',
+        ],
+        'options'  => [
+            MYSQLI_CLIENT_SSL => true,
+            MYSQLI_OPT_SSL_VERIFY_SERVER_CERT => true,
         ],
     ];
 
