@@ -39,7 +39,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
-    background: url('cheche.jpg') no-repeat center center / cover fixed;
+    background: url('e.jpg') no-repeat center center / cover fixed;
     color: var(--text-light);
     font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif;
     font-size: 16px;

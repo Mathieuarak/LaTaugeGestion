@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
-        'username'     => '',
-        'password'     => '',
-        'database'     => '',
+        'hostname'     => 'mydbtauge-mathieuarakelian.k.aivencloud.com',
+        'username'     => 'avnadmin',
+        'password'     => 'AVNS_Hy1h0qW0snlGU53VWoz',
+        'database'     => 'defaultdb',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,
