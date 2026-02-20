@@ -10,7 +10,7 @@ use CodeIgniter\Cache\Handlers\PredisHandler;
 use CodeIgniter\Cache\Handlers\RedisHandler;
 use CodeIgniter\Cache\Handlers\WincacheHandler;
 use CodeIgniter\Config\BaseConfig;
-dd('CACHE CONFIG LOADED');
+
 class Cache extends BaseConfig
 {
     /**
