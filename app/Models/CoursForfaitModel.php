@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class CoursForfaitModel extends Model
 {
-    protected $table = 'coursForfait';
+    protected $table = 'coursforfait';
     protected $primaryKey = 'idcoursfor';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';

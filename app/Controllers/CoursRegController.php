@@ -36,10 +36,9 @@ class CoursRegController extends BaseController
     {
         if ($this->request->getMethod() === 'post') {
             $data = [
-                'client_id' => $this->request->getPost('client_id'),
-                'cheval_id' => $this->request->getPost('cheval_id'),
-                'tarif_id' => $this->request->getPost('tarif_id'),
-                'date_debut' => $this->request->getPost('date_debut'),
+                'clients_idclients' => $this->request->getPost('clients_idclients'),
+                'coursDate'         => $this->request->getPost('coursDate'),
+                'description'       => $this->request->getPost('description'),
             ];
 
             if ($this->coursRegModel->save($data)) {
@@ -69,11 +68,10 @@ class CoursRegController extends BaseController
     {
         if ($this->request->getMethod() === 'post') {
             $data = [
-                'id' => $id,
-                'client_id' => $this->request->getPost('client_id'),
-                'cheval_id' => $this->request->getPost('cheval_id'),
-                'tarif_id' => $this->request->getPost('tarif_id'),
-                'date_debut' => $this->request->getPost('date_debut'),
+                'idcoursReg'        => $id,
+                'clients_idclients' => $this->request->getPost('clients_idclients'),
+                'coursDate'         => $this->request->getPost('coursDate'),
+                'description'       => $this->request->getPost('description'),
             ];
 
             if ($this->coursRegModel->save($data)) {

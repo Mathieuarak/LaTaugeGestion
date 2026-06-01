@@ -26,7 +26,7 @@ class Cours extends BaseController
         COUNT(DISTINCT cf.idcoursfor) as nbForfaits
     ')
             ->join('coursreg cr', 'cr.clients_idclients = c.idclients', 'left')
-            ->join('coursForfait cf', 'cf.clients_idclients = c.idclients', 'left')
+            ->join('coursforfait cf', 'cf.clients_idclients = c.idclients', 'left')
             ->groupBy('c.idclients')
             ->having('(nbCours > 0 OR nbForfaits > 0)')
             ->get()
@@ -69,7 +69,7 @@ class Cours extends BaseController
 
 
         // ===== FORFAITS =====
-        $rawForfaits = $db->table('coursForfait cf')
+        $rawForfaits = $db->table('coursforfait cf')
             ->select('
             cf.idcoursfor,
             cf.dateAjout,
@@ -189,6 +189,10 @@ class Cours extends BaseController
         $clientId    = $this->request->getPost('clients_idclients');
         $description = $this->request->getPost('description');
 
+        if (empty($clientId)) {
+            return redirect()->back()->withInput()->with('error', 'Veuillez sélectionner un client.');
+        }
+
         // -------------------
         // Cours à l'unité
         // -------------------
@@ -300,6 +304,10 @@ class Cours extends BaseController
         $clientId    = $this->request->getPost('clients_idclients');
         $description = $this->request->getPost('description');
         $dateCours   = $this->request->getPost('coursDate');
+
+        if (empty($clientId)) {
+            return redirect()->back()->withInput()->with('error', 'Veuillez sélectionner un client.');
+        }
 
         if ($type === 'unique') {
 

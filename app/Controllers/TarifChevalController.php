@@ -23,8 +23,8 @@ class TarifChevalController extends BaseController
     {
         if ($this->request->getMethod() === 'post') {
             $data = [
-                'cheval_id' => $this->request->getPost('cheval_id'),
-                'tarif_id' => $this->request->getPost('tarif_id'),
+                'pensions_idpensions' => $this->request->getPost('pensions_idpensions'),
+                'tarifs_idtarifs'     => $this->request->getPost('tarifs_idtarifs'),
             ];
 
             if ($this->tarifsChevalModel->save($data)) {
