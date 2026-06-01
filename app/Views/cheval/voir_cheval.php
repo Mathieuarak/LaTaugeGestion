@@ -14,31 +14,31 @@
         <table class="table align-middle mb-0">
             <tbody>
                 <tr>
-                    <td style="width:35%; font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Client</td>
+                    <td style="width:35%; font-weight:600; color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Client</td>
                     <td><?= esc($client['nom'] . ' ' . $client['prenom']) ?></td>
                 </tr>
                 <tr>
-                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Nom</td>
+                    <td style="font-weight:600; color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Nom</td>
                     <td><?= esc($cheval['nom']) ?></td>
                 </tr>
                 <tr>
-                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Numéro SIRE</td>
+                    <td style="font-weight:600; color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Numéro SIRE</td>
                     <td><?= esc($cheval['numSire']) ?></td>
                 </tr>
                 <tr>
-                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Date de naissance</td>
+                    <td style="font-weight:600; color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Date de naissance</td>
                     <td><?= esc($cheval['dateNaissance']) ?></td>
                 </tr>
                 <tr>
-                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Date d'arrivée</td>
+                    <td style="font-weight:600; color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Date d'arrivée</td>
                     <td><?= esc($cheval['dateArrivee']) ?></td>
                 </tr>
                 <tr>
-                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Dernier vaccin</td>
+                    <td style="font-weight:600; color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Dernier vaccin</td>
                     <td><?= esc($cheval['vaccin']) ?></td>
                 </tr>
                 <tr>
-                    <td style="font-weight:600; color:rgba(255,255,255,0.6); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Prix pension</td>
+                    <td style="font-weight:600; color:var(--muted); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px;">Prix pension</td>
                     <td>
                         <?php
                             $price = null;
