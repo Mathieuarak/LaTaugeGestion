@@ -6,13 +6,13 @@ use CodeIgniter\Model;
 
 class CourRegTarifCourRegModel extends Model
 {
-    protected $table            = 'courreg_tarifcourreg';
+    protected $table            = 'courReg_tarifCourReg';
     protected $primaryKey       = 'id';               
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
 
     protected $allowedFields = [
-        'coursreg_idcoursReg',
+        'coursReg_idcoursReg',
         'tarifCourReg_idtarifCourReg',
         'tarifCourCollectifs',
         'tarifCourADeux',

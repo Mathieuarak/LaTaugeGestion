@@ -189,17 +189,17 @@
 
     <div class="buttons-container">
 
-        <button class="latauge-btn" onclick="window.location.href='client_ajout'">
+        <button class="latauge-btn" onclick="window.location.href='<?= base_url('client_ajout') ?>'">
             <span class="btn-icon">➕</span>
             <span class="btn-label">Ajouter un client</span>
         </button>
 
-        <button class="latauge-btn" onclick="window.location.href='ajout_cheval'">
+        <button class="latauge-btn" onclick="window.location.href='<?= base_url('ajout_cheval') ?>'">
             <span class="btn-icon">🐴</span>
             <span class="btn-label">Ajouter un cheval</span>
         </button>
 
-        <button class="latauge-btn full-width" onclick="window.location.href='ajout_cours'">
+        <button class="latauge-btn full-width" onclick="window.location.href='<?= base_url('ajout_cours') ?>'">
             <span class="btn-icon">🏇</span>
             <span class="btn-label">Ajouter un cours</span>
         </button>

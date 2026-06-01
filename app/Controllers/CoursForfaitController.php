@@ -10,6 +10,65 @@ use App\Models\TarifCourRegModel;
 
 class CoursForfaitController extends BaseController
 {
+    public function index()
+    {
+        $model = new CoursForfaitModel();
+        $cours = $model->findAll();
+
+        return view('cours/cours_forfaits_liste', [
+            'cours' => $cours
+        ]);
+    }
+
+    public function create()
+    {
+        $tarifModel = new TarifCourForfaitModel();
+        $clientModel = new ClientModel();
+
+        return view('cours/create_forfait', [
+            'tarifsForfait' => $tarifModel->findAll(),
+            'clients' => $clientModel->findAll()
+        ]);
+    }
+
+    public function store()
+    {
+        $model = new CoursForfaitModel();
+        $pivot = new CourForfaitTarifCourForfaitModel();
+        $tarifModel = new TarifCourForfaitModel();
+
+        if ($this->request->getMethod() === 'post') {
+            $data = [
+                'clients_idclients' => $this->request->getPost('clients_idclients'),
+                'description'       => $this->request->getPost('description'),
+                'dateAjout'        => date('Y-m-d')
+            ];
+
+            $coursId = $model->insert($data);
+            $forfaitId = $this->request->getPost('forfait_id');
+
+            if ($forfaitId && $coursId) {
+                $tarifRow = $tarifModel->find($forfaitId);
+                $pivotData = [
+                    'coursForfait_idcoursfor' => $coursId,
+                    'tarifCourForfait_idtarifCours' => $forfaitId
+                ];
+
+                $fields = ['tarifCoursCollec10','tarifCoursDuo10','tarifCoursSolo10','travailCheval1','tarifCoursCollec5','tarifCoursDuo5','tarifCoursSolo5','travailCheval2'];
+                foreach ($fields as $f) {
+                    if (isset($tarifRow[$f]) && is_numeric($tarifRow[$f]) && floatval($tarifRow[$f])>0) {
+                        $pivotData[$f] = floatval($tarifRow[$f]);
+                    }
+                }
+                $pivot->insert($pivotData);
+            }
+
+            return redirect()->route('cours')->with('success', 'Forfait créé avec succès');
+        }
+
+        return redirect()->back()->withInput();
+    }
+
     public function edit($id)
     {
         $model = new CoursForfaitModel();

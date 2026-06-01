@@ -61,8 +61,8 @@ class Cours extends BaseController
             link.tarifCourParticulier as optParticulier,
             link.tarifTravailCheval as optCheval
         ')
-            ->join('courReg_tarifCourReg link', 'link.coursreg_idcoursReg = c.idcoursReg', 'left')
-            ->join('tarifcourreg t', 't.idtarifCourReg = link.tarifCourReg_idtarifCourReg', 'left')
+            ->join('courReg_tarifCourReg link', 'link.coursReg_idcoursReg = c.idcoursReg', 'left')
+            ->join('tarifCourReg t', 't.idtarifCourReg = link.tarifCourReg_idtarifCourReg', 'left')
             ->where('c.clients_idclients', $idClient)
             ->get()
             ->getResultArray();
@@ -186,7 +186,7 @@ class Cours extends BaseController
     public function store()
     {
         $type        = $this->request->getPost('type_cours');
-        $clientId    = $this->request->getPost('client');
+        $clientId    = $this->request->getPost('clients_idclients');
         $description = $this->request->getPost('description');
 
         // -------------------
@@ -209,7 +209,7 @@ class Cours extends BaseController
             ]);
 
             $linkModel->insert([
-                'coursreg_idcoursReg'         => $idcoursReg,
+                'coursReg_idcoursReg'         => $idcoursReg,
                 'tarifCourReg_idtarifCourReg' => $tarif['idtarifCourReg'],
                 'tarifCourCollectifs'   => $option === 'tarifCourCollectifs' ? 1 : 0,
                 'tarifCourADeux'        => $option === 'tarifCourADeux' ? 1 : 0,
@@ -286,7 +286,7 @@ class Cours extends BaseController
 
         return view('cours/edit_cours', [
             'cours'          => $coursRegModel->find($id),
-            'options'        => (new CourRegTarifCourRegModel())->where('coursreg_idcoursReg', $id)->first(),
+            'options'        => (new CourRegTarifCourRegModel())->where('coursReg_idcoursReg', $id)->first(),
             'clients'        => (new ClientModel())->findAll(),
             'tarifs'         => (new TarifCourRegModel())->first(),
             'tarifsForfait'  => $tarifForfaitModel->findAll(),
@@ -297,7 +297,7 @@ class Cours extends BaseController
     public function update($id)
     {
         $type        = $this->request->getPost('type_cours');
-        $clientId    = $this->request->getPost('client');
+        $clientId    = $this->request->getPost('clients_idclients');
         $description = $this->request->getPost('description');
         $dateCours   = $this->request->getPost('coursDate');
 
@@ -327,7 +327,7 @@ class Cours extends BaseController
             }
 
             $linkModel
-                ->where('coursreg_idcoursReg', $id)
+                ->where('coursReg_idcoursReg', $id)
                 ->set(array_merge([
                     'tarifCourReg_idtarifCourReg' => $tarifModel->first()['idtarifCourReg']
                 ], $dataOptions))
@@ -414,7 +414,7 @@ class Cours extends BaseController
         $cours = $coursModel->find($id);
         if (!$cours) return redirect()->back();
 
-        $linkModel->where('coursreg_idcoursReg', $id)->delete();
+        $linkModel->where('coursReg_idcoursReg', $id)->delete();
         $coursModel->delete($id);
 
         return redirect()->to(route_to('cours_client', $cours['clients_idclients']))
