@@ -67,7 +67,8 @@
                         $optionsCours = [
                             'tarifCourCollectifs'=>'Cours collectif',
                             'tarifCourADeux'=>'Cours à deux',
-                            'tarifCourParticulier'=>'Cours particulier',
+                            'tarifCourParticulier30'=>'Cours particulier 30 min',
+                            'tarifCourParticulier60'=>'Cours particulier 60 min',
                             'tarifTravailCheval'=>'Travail du cheval'
                         ];
                         foreach($optionsCours as $field=>$label):
@@ -88,11 +89,13 @@
                         <?php foreach($tarifsForfait as $forfait):
                             $prix = floatval($forfait['tarifCoursCollec10'])
                                   + floatval($forfait['tarifCoursDuo10'])
-                                  + floatval($forfait['tarifCoursSolo10'])
+                                  + floatval($forfait['tarifCoursSolo10_30'])
+                                  + floatval($forfait['tarifCoursSolo10_60'])
                                   + floatval($forfait['travailCheval1'])
                                   + floatval($forfait['tarifCoursCollec5'])
                                   + floatval($forfait['tarifCoursDuo5'])
-                                  + floatval($forfait['tarifCoursSolo5'])
+                                  + floatval($forfait['tarifCoursSolo5_30'])
+                                  + floatval($forfait['tarifCoursSolo5_60'])
                                   + floatval($forfait['travailCheval2']);
                             $checked = isset($cours['tarifCourForfait_idtarifCours']) && $cours['tarifCourForfait_idtarifCours']==$forfait['idtarifCours'];
                         ?>

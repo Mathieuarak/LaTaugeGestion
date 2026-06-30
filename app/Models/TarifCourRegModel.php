@@ -7,17 +7,18 @@ use CodeIgniter\Model;
 class TarifCourRegModel extends Model
 {
     protected $table = 'tarifCourReg';
-    protected $primaryKey = 'idtarifCourReg';  
+    protected $primaryKey = 'idtarifCourReg';
     protected $useAutoIncrement = true;
     protected $returnType = 'array';
+
     protected $allowedFields = [
         'tarifCourCollectifs',
         'tarifCourADeux',
-        'tarifCourParticulier',
+        'tarifCourParticulier30',
+        'tarifCourParticulier60',
         'tarifTravailCheval'
     ];
 
-    // Dates
     protected $useTimestamps = false;
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

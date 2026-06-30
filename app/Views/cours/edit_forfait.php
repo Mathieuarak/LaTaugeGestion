@@ -71,7 +71,8 @@
                         $optionsCours = [
                             'tarifCourCollectifs' => 'Cours collectif',
                             'tarifCourADeux' => 'Cours à deux',
-                            'tarifCourParticulier' => 'Cours particulier',
+                            'tarifCourParticulier30' => 'Cours particulier 30 min',
+                            'tarifCourParticulier60' => 'Cours particulier 60 min',
                             'tarifTravailCheval' => 'Travail du cheval'
                         ];
                         foreach ($optionsCours as $field => $label):

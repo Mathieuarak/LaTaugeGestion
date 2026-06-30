@@ -18,7 +18,7 @@
                         <!-- Client -->
                         <div class="mb-3">
                             <label for="clients_idclients" class="form-label">Client</label>
-                            <select name="clients_idclients" id="clients_idclients" class="form-select" required>
+                            <select name="clients_idclients" id="clients_idclients" class="form-select">
                                 <option value="">-- Sélectionner un client --</option>
                                 <?php foreach ($clients as $client): ?>
                                     <option value="<?= esc($client['idclients']) ?>"
@@ -34,7 +34,7 @@
                             <label for="nom" class="form-label">Nom</label>
                             <input type="text" name="nom" id="nom"
                                 class="form-control"
-                                value="<?= esc(old('nom')) ?>" required>
+                                value="<?= esc(old('nom')) ?>">
                         </div>
 
                         <!-- Numéro SIRE -->
@@ -45,10 +45,7 @@
                                 id="numSire"
                                 class="form-control"
                                 value="<?= esc(old('numSire')) ?>"
-                                maxlength="15"
-                                pattern="[0-9]{15}"
-                                required>
-                            <div class="form-text">15 chiffres obligatoires.</div>
+                                maxlength="15">
                         </div>
 
                         <!-- Dates -->
