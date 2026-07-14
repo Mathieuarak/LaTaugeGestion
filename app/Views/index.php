@@ -256,21 +256,18 @@
     <div class="home-card" onclick="window.location.href='<?= base_url('client_ajout') ?>'">
         <div class="icon">➕</div>
         <div class="title">Ajouter un client</div>
-        <div class="desc">Enregistrer un nouveau propriétaire et ses coordonnées.</div>
         <span class="go">Commencer →</span>
     </div>
 
     <div class="home-card" onclick="window.location.href='<?= base_url('ajout_cheval') ?>'">
         <div class="icon">🐴</div>
         <div class="title">Ajouter un cheval</div>
-        <div class="desc">Créer une fiche pension avec options et tarifs.</div>
         <span class="go">Commencer →</span>
     </div>
 
     <div class="home-card" onclick="window.location.href='<?= base_url('ajout_cours') ?>'">
         <div class="icon">🏇</div>
         <div class="title">Ajouter un cours</div>
-        <div class="desc">Planifier un cours à l'unité ou un forfait.</div>
         <span class="go">Commencer →</span>
     </div>
 
