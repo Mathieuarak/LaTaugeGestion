@@ -17,14 +17,12 @@ class CourForfaitTarifCourForfaitModel extends Model
 
         'tarifCoursCollec10',
         'tarifCoursDuo10',
-        'tarifCoursSolo10_30',
-        'tarifCoursSolo10_60',
+        'tarifCoursSolo10',
         'travailCheval1',
 
         'tarifCoursCollec5',
         'tarifCoursDuo5',
-        'tarifCoursSolo5_30',
-        'tarifCoursSolo5_60',
+        'tarifCoursSolo5',
         'travailCheval2',
 
         'prixFinal'

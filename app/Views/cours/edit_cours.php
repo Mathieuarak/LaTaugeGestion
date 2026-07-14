@@ -118,13 +118,11 @@
                         <?php foreach($tarifsForfait as $forfait):
                             $prix = floatval($forfait['tarifCoursCollec10'])
                                   + floatval($forfait['tarifCoursDuo10'])
-                                  + floatval($forfait['tarifCoursSolo10_30'])
-                                  + floatval($forfait['tarifCoursSolo10_60'])
+                                  + floatval($forfait['tarifCoursSolo10'])
                                   + floatval($forfait['travailCheval1'])
                                   + floatval($forfait['tarifCoursCollec5'])
                                   + floatval($forfait['tarifCoursDuo5'])
-                                  + floatval($forfait['tarifCoursSolo5_30'])
-                                  + floatval($forfait['tarifCoursSolo5_60'])
+                                  + floatval($forfait['tarifCoursSolo5'])
                                   + floatval($forfait['travailCheval2']);
                             $checked = isset($cours['tarifCourForfait_idtarifCours']) && $cours['tarifCourForfait_idtarifCours']==$forfait['idtarifCours'];
                         ?>

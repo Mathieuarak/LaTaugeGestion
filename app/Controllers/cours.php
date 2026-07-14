@@ -110,13 +110,11 @@ class Cours extends BaseController
             cf.stade,
             link.tarifCoursCollec10,
             link.tarifCoursDuo10,
-            link.tarifCoursSolo10_30,
-            link.tarifCoursSolo10_60,
+            link.tarifCoursSolo10,
             link.travailCheval1,
             link.tarifCoursCollec5,
             link.tarifCoursDuo5,
-            link.tarifCoursSolo5_30,
-            link.tarifCoursSolo5_60,
+            link.tarifCoursSolo5,
             link.travailCheval2,
             link.prixFinal
         ')
@@ -133,13 +131,11 @@ class Cours extends BaseController
         $labels = [
             'tarifCoursCollec10' => 'Cours collectif 10',
             'tarifCoursDuo10'    => 'Cours à deux 10',
-            'tarifCoursSolo10_30'=> 'Cours solo 10 - 30 min',
-            'tarifCoursSolo10_60'=> 'Cours solo 10 - 60 min',
+            'tarifCoursSolo10'   => 'Cours solo 10',
             'travailCheval1'     => 'Travail cheval 1',
             'tarifCoursCollec5'  => 'Cours collectif 5',
             'tarifCoursDuo5'     => 'Cours à deux 5',
-            'tarifCoursSolo5_30' => 'Cours solo 5 - 30 min',
-            'tarifCoursSolo5_60' => 'Cours solo 5 - 60 min',
+            'tarifCoursSolo5'    => 'Cours solo 5',
             'travailCheval2'     => 'Travail cheval 2'
         ];
 
@@ -295,13 +291,11 @@ class Cours extends BaseController
             $fields = [
                 'tarifCoursCollec10',
                 'tarifCoursDuo10',
-                'tarifCoursSolo10_30',
-                'tarifCoursSolo10_60',
+                'tarifCoursSolo10',
                 'travailCheval1',
                 'tarifCoursCollec5',
                 'tarifCoursDuo5',
-                'tarifCoursSolo5_30',
-                'tarifCoursSolo5_60',
+                'tarifCoursSolo5',
                 'travailCheval2'
             ];
 
@@ -405,13 +399,11 @@ class Cours extends BaseController
                 $reset = [
                     'tarifCoursCollec10' => null,
                     'tarifCoursDuo10'    => null,
-                    'tarifCoursSolo10_30'=> null,
-                    'tarifCoursSolo10_60'=> null,
+                    'tarifCoursSolo10'   => null,
                     'travailCheval1'     => null,
                     'tarifCoursCollec5'  => null,
                     'tarifCoursDuo5'     => null,
-                    'tarifCoursSolo5_30' => null,
-                    'tarifCoursSolo5_60' => null,
+                    'tarifCoursSolo5'    => null,
                     'travailCheval2'     => null,
                 ];
 

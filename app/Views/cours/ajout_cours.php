@@ -131,8 +131,8 @@
 
                         <?php
                         $groups = [
-                            'five' => ['label'=>'Forfait 5 jours','keys'=>['tarifCoursCollec5'=>'Cours collectif 5','tarifCoursDuo5'=>'Cours à deux 5','tarifCoursSolo5_30'=>'Cours solo 5 - 30 min','tarifCoursSolo5_60'=>'Cours solo 5 - 60 min']],
-                            'ten' => ['label'=>'Forfait 10 jours','keys'=>['tarifCoursCollec10'=>'Cours collectif 10','tarifCoursDuo10'=>'Cours à deux 10','tarifCoursSolo10_30'=>'Cours solo 10 - 30 min','tarifCoursSolo10_60'=>'Cours solo 10 - 60 min']],
+                            'five' => ['label'=>'Forfait 5 jours','keys'=>['tarifCoursCollec5'=>'Cours collectif 5','tarifCoursDuo5'=>'Cours à deux 5','tarifCoursSolo5'=>'Cours solo 5']],
+                            'ten' => ['label'=>'Forfait 10 jours','keys'=>['tarifCoursCollec10'=>'Cours collectif 10','tarifCoursDuo10'=>'Cours à deux 10','tarifCoursSolo10'=>'Cours solo 10']],
                             'travail' => ['label'=>'Travail cheval','keys'=>['travailCheval1'=>'Travail cheval 1','travailCheval2'=>'Travail cheval 2']],
                         ];
                         ?>
