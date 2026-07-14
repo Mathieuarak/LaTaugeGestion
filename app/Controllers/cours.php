@@ -188,6 +188,11 @@ class Cours extends BaseController
             'paye' => $cours['paye'] ? 0 : 1
         ]);
 
+        $redirect = $this->request->getPost('redirect');
+        if ($redirect && strpos($redirect, site_url()) === 0) {
+            return redirect()->to($redirect);
+        }
+
         return redirect()->to(route_to('cours_client', $cours['clients_idclients']));
     }
 
@@ -203,6 +208,11 @@ class Cours extends BaseController
         $forfaitModel->update($id, [
             'paye' => (isset($forfait['paye']) && $forfait['paye']) ? 0 : 1
         ]);
+
+        $redirect = $this->request->getPost('redirect');
+        if ($redirect && strpos($redirect, site_url()) === 0) {
+            return redirect()->to($redirect);
+        }
 
         return redirect()->to(route_to('cours_client', $forfait['clients_idclients']));
     }
@@ -458,6 +468,81 @@ class Cours extends BaseController
 
         return redirect()->to(route_to('cours_client', $cours['clients_idclients']))
             ->with('success', 'Cours supprimé');
+    }
+
+    public function impayes()
+    {
+        $db = \Config\Database::connect();
+
+        // ===== Cours à l'unité impayés =====
+        $selectFields = ['c.idcoursReg', 'c.coursDate', 'c.description', 'cl.idclients', 'cl.nom', 'cl.prenom'];
+        foreach (array_keys(self::OPTIONS_UNIQUE) as $field) {
+            $selectFields[] = "t.$field as tarif_$field";
+            $selectFields[] = "link.$field as link_$field";
+        }
+
+        $rawCours = $db->table('coursreg c')
+            ->select(implode(', ', $selectFields))
+            ->join('clients cl', 'cl.idclients = c.clients_idclients', 'left')
+            ->join('courReg_tarifCourReg link', 'link.coursReg_idcoursReg = c.idcoursReg', 'left')
+            ->join('tarifCourReg t', 't.idtarifCourReg = link.tarifCourReg_idtarifCourReg', 'left')
+            ->where('c.paye', 0)
+            ->orderBy('c.coursDate', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $impayesCours = [];
+        foreach ($rawCours as $row) {
+            $option = '';
+            $prix = 0;
+            foreach (self::OPTIONS_UNIQUE as $field => $label) {
+                if (!empty($row['link_' . $field])) {
+                    $option = $label;
+                    $prix = floatval($row['tarif_' . $field]);
+                    break;
+                }
+            }
+
+            $impayesCours[] = [
+                'id'          => $row['idcoursReg'],
+                'clientId'    => $row['idclients'],
+                'client'      => trim($row['nom'] . ' ' . $row['prenom']),
+                'date'        => $row['coursDate'],
+                'description' => $row['description'],
+                'option'      => $option,
+                'prix'        => $prix,
+            ];
+        }
+
+        // ===== Forfaits impayés =====
+        $rawForfaits = $db->table('coursforfait cf')
+            ->select('cf.idcoursfor, cf.dateAjout, cf.description, cl.idclients, cl.nom, cl.prenom, link.prixFinal')
+            ->join('clients cl', 'cl.idclients = cf.clients_idclients', 'left')
+            ->join('courForfait_tarifCourForfait link', 'link.coursForfait_idcoursfor = cf.idcoursfor', 'left')
+            ->where('cf.paye', 0)
+            ->orderBy('cf.dateAjout', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $impayesForfaits = [];
+        foreach ($rawForfaits as $row) {
+            $impayesForfaits[] = [
+                'id'          => $row['idcoursfor'],
+                'clientId'    => $row['idclients'],
+                'client'      => trim($row['nom'] . ' ' . $row['prenom']),
+                'date'        => $row['dateAjout'],
+                'description' => $row['description'],
+                'prix'        => $row['prixFinal'] ?? 0,
+            ];
+        }
+
+        $total = array_sum(array_column($impayesCours, 'prix')) + array_sum(array_column($impayesForfaits, 'prix'));
+
+        return view('cours/impayes', [
+            'impayesCours'    => $impayesCours,
+            'impayesForfaits' => $impayesForfaits,
+            'total'           => $total,
+        ]);
     }
 
     public function updateStade($id)

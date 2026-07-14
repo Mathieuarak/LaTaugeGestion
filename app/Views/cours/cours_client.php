@@ -27,31 +27,44 @@
                 </tr>
             </thead>
             <tbody>
-            <?php foreach($cours as $c):
-                $options = esc($c['option']);
-                $prix = $c['prix'];
-
-                $payeForm = '<form action="'.route_to('cours_toggle_paye',$c['idcoursReg']).'" method="post" class="d-inline">
-                                <input type="hidden" name="redirect" value="'.current_url().'">
-                                <input class="form-check-input" type="checkbox" onchange="this.form.submit();" '.($c['paye'] ? 'checked' : '').'>
-                             </form>';
-
-                $modifier = '<button class="btn btn-primary btn-sm" onclick="window.location.href=\''.route_to('tarif_cours_modifier',$c['idcoursReg']).'?redirect='.$client['idclients'].'\'">Modifier</button>';
-
-                $supprimer = '<form action="'.route_to('tarif_cours_supprimer',$c['idcoursReg']).'" method="post" class="d-inline">
-                                <input type="hidden" name="redirect" value="'.current_url().'">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Supprimer ce cours ?\')">Supprimer</button>
-                             </form>';
-            ?>
+            <?php if (empty($cours)) : ?>
                 <tr>
-                    <td><?= date('d/m/Y',strtotime($c['coursDate'])) ?></td>
-                    <td><?= $options ?></td>
-                    <td><?= number_format($prix,2) ?> €</td>
-                    <td><?= $payeForm ?></td>
-                    <td><?= $modifier ?></td>
-                    <td><?= $supprimer ?></td>
+                    <td colspan="6" class="p-0">
+                        <div class="empty-state">
+                            <div class="empty-icon">🏇</div>
+                            <div class="empty-title">Aucun cours à l'unité</div>
+                            <div class="empty-desc">Ce client n'a pas encore de cours à l'unité enregistré.</div>
+                            <a href="<?= base_url('ajout_cours') ?>" class="btn btn-primary btn-sm">Ajouter un cours</a>
+                        </div>
+                    </td>
                 </tr>
-            <?php endforeach; ?>
+            <?php else : ?>
+                <?php foreach($cours as $c):
+                    $options = esc($c['option']);
+                    $prix = $c['prix'];
+
+                    $payeForm = '<form action="'.route_to('cours_toggle_paye',$c['idcoursReg']).'" method="post" class="d-inline">
+                                    <input type="hidden" name="redirect" value="'.current_url().'">
+                                    <input class="form-check-input" type="checkbox" onchange="this.form.submit();" '.($c['paye'] ? 'checked' : '').'>
+                                 </form>';
+
+                    $modifier = '<button class="btn btn-primary btn-sm" onclick="window.location.href=\''.route_to('tarif_cours_modifier',$c['idcoursReg']).'?redirect='.$client['idclients'].'\'">Modifier</button>';
+
+                    $supprimer = '<form action="'.route_to('tarif_cours_supprimer',$c['idcoursReg']).'" method="post" class="d-inline" data-confirm="Supprimer ce cours ? Cette action est irréversible.">
+                                    <input type="hidden" name="redirect" value="'.current_url().'">
+                                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                                 </form>';
+                ?>
+                    <tr>
+                        <td><?= date('d/m/Y',strtotime($c['coursDate'])) ?></td>
+                        <td><?= $options ?></td>
+                        <td><?= number_format($prix,2) ?> €</td>
+                        <td><?= $payeForm ?></td>
+                        <td><?= $modifier ?></td>
+                        <td><?= $supprimer ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -108,8 +121,8 @@
                             </button>
                         </td>
                         <td>
-                            <form action="<?= route_to('cours_forfait_supprimer', $f['idcoursfor']) ?>" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Supprimer ce forfait ?')">
+                            <form action="<?= route_to('cours_forfait_supprimer', $f['idcoursfor']) ?>" method="post" class="d-inline" data-confirm="Supprimer ce forfait ? Cette action est irréversible.">
+                                <button type="submit" class="btn btn-danger btn-sm">
                                     Supprimer
                                 </button>
                             </form>
@@ -118,7 +131,13 @@
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="8" class="text-center">Aucun forfait enregistré</td>
+                    <td colspan="7" class="p-0">
+                        <div class="empty-state">
+                            <div class="empty-icon">📦</div>
+                            <div class="empty-title">Aucun forfait</div>
+                            <div class="empty-desc">Ce client n'a pas encore de forfait enregistré.</div>
+                        </div>
+                    </td>
                 </tr>
             <?php endif; ?>
             </tbody>

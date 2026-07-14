@@ -66,9 +66,8 @@
         $modifier = '<a class="btn btn-sm btn-outline-warning" href="' . base_url('cheval_modif-' . $id) . '">Modifier</a>';
 
         $supprimer = '
-            <form action="' . base_url('cheval-supprimer-' . $id) . '" method="post" style="display:inline;">
-                <button type="submit" class="btn btn-sm btn-outline-danger"
-                    onclick="return confirm(\'Supprimer ce cheval ?\')">
+            <form action="' . base_url('cheval-supprimer-' . $id) . '" method="post" style="display:inline;" data-confirm="Supprimer ce cheval ? Cette action est irréversible.">
+                <button type="submit" class="btn btn-sm btn-outline-danger">
                     Supprimer
                 </button>
             </form>
@@ -85,9 +84,26 @@
     }
     ?>
 
-    <div class="table-responsive">
-        <?= $table->generate(); ?>
-    </div>
+    <?php if (empty($chevauxListe)) : ?>
+        <div class="table-responsive">
+            <div class="empty-state">
+                <div class="empty-icon">🐴</div>
+                <?php if (!empty($search)) : ?>
+                    <div class="empty-title">Aucun résultat</div>
+                    <div class="empty-desc">Aucun cheval ne correspond à « <?= esc($search) ?> ».</div>
+                    <a href="<?= current_url() ?>" class="btn btn-outline-secondary btn-sm">Réinitialiser la recherche</a>
+                <?php else : ?>
+                    <div class="empty-title">Aucun cheval pour le moment</div>
+                    <div class="empty-desc">Ajoutez votre premier cheval pour commencer à suivre sa pension et ses tarifs.</div>
+                    <a href="<?= base_url('ajout_cheval') ?>" class="btn btn-primary btn-sm">Ajouter un cheval</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php else : ?>
+        <div class="table-responsive">
+            <?= $table->generate(); ?>
+        </div>
+    <?php endif; ?>
 
 </section>
 

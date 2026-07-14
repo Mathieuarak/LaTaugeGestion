@@ -67,12 +67,12 @@
                      </a>';
 
         $supprimer = '
-            <form action="' . base_url('client-supprimer-' . $id) . '" 
-                  method="post" 
-                  style="display:inline;">
-                <button type="submit" 
-                        class="btn btn-sm btn-outline-danger"
-                        onclick="return confirm(\'Supprimer ce client ?\')">
+            <form action="' . base_url('client-supprimer-' . $id) . '"
+                  method="post"
+                  style="display:inline;"
+                  data-confirm="Supprimer ce client ? Cette action est irréversible.">
+                <button type="submit"
+                        class="btn btn-sm btn-outline-danger">
                     Supprimer
                 </button>
             </form>
@@ -89,9 +89,26 @@
     ?>
 
     <!-- Tableau responsive -->
-    <div class="table-responsive">
-        <?= $table->generate(); ?>
-    </div>
+    <?php if (empty($clientListe)) : ?>
+        <div class="table-responsive">
+            <div class="empty-state">
+                <div class="empty-icon">👥</div>
+                <?php if (!empty($search)) : ?>
+                    <div class="empty-title">Aucun résultat</div>
+                    <div class="empty-desc">Aucun client ne correspond à « <?= esc($search) ?> ».</div>
+                    <a href="<?= current_url() ?>" class="btn btn-outline-secondary btn-sm">Réinitialiser la recherche</a>
+                <?php else : ?>
+                    <div class="empty-title">Aucun client pour le moment</div>
+                    <div class="empty-desc">Ajoutez votre premier client pour commencer à gérer ses chevaux et ses cours.</div>
+                    <a href="<?= base_url('client_ajout') ?>" class="btn btn-primary btn-sm">Ajouter un client</a>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php else : ?>
+        <div class="table-responsive">
+            <?= $table->generate(); ?>
+        </div>
+    <?php endif; ?>
 
 </div>
 

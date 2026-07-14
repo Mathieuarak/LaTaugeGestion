@@ -80,6 +80,17 @@
     .stat-icon.is-purple  { background: var(--purple-soft); color: var(--purple); }
     .stat-icon.is-orange  { background: var(--orange-soft); color: var(--orange); }
 
+    .stat-tile-link {
+        text-decoration: none;
+        color: inherit;
+        transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .stat-tile-link:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+        text-decoration: none;
+    }
+
     .activity-card {
         display: flex;
         align-items: center;
@@ -192,6 +203,52 @@
         from { opacity: 0; transform: translateY(16px); }
         to   { opacity: 1; transform: translateY(0); }
     }
+
+    .vaccine-alert-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--warning);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow-xs);
+        padding: 18px 22px;
+        max-width: 880px;
+        margin: 16px auto 0;
+        animation: homeUp 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) 0.24s backwards;
+    }
+    .vaccine-alert-card .vaccine-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-weight: 620;
+        color: var(--text);
+        font-size: 0.95rem;
+    }
+    .vaccine-list { display: flex; flex-direction: column; gap: 8px; }
+    .vaccine-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 9px 13px;
+        border-radius: var(--radius-sm);
+        background: var(--surface-2);
+        text-decoration: none;
+        color: inherit;
+        transition: background var(--transition);
+    }
+    .vaccine-row:hover { background: var(--surface-3); }
+    .vaccine-row .vaccine-name { font-weight: 560; font-size: 0.88rem; color: var(--text); }
+    .vaccine-row .vaccine-client { font-size: 0.78rem; color: var(--muted); }
+    .vaccine-row .vaccine-badge {
+        font-size: 0.72rem;
+        font-weight: 600;
+        padding: 3px 9px;
+        border-radius: var(--radius-pill);
+        white-space: nowrap;
+    }
+    .vaccine-badge.is-overdue { background: var(--danger-soft); color: var(--danger); }
+    .vaccine-badge.is-soon    { background: var(--warning-soft); color: var(--warning); }
 </style>
 
 <div class="home-hero">
@@ -222,14 +279,38 @@
             <div class="stat-label">Cours ce mois-ci</div>
         </div>
     </div>
-    <div class="stat-tile">
+    <a class="stat-tile stat-tile-link" href="<?= route_to('cours_impayes') ?>">
         <div class="stat-icon is-orange">💳</div>
         <div>
             <div class="stat-value"><?= esc($stats['impayes']) ?></div>
             <div class="stat-label">Paiements en attente</div>
         </div>
+    </a>
+</div>
+
+<?php if (!empty($vaccinAlertes)) : ?>
+<div class="vaccine-alert-card">
+    <div class="vaccine-header">
+        <span>💉</span>
+        <span>Rappels de vaccination à prévoir</span>
+    </div>
+    <div class="vaccine-list">
+        <?php foreach ($vaccinAlertes as $v) : ?>
+            <a class="vaccine-row" href="<?= route_to('cheval_voir', $v['idpensions']) ?>">
+                <span>
+                    <span class="vaccine-name"><?= esc($v['nom']) ?></span>
+                    <span class="vaccine-client"> — <?= esc($v['client']) ?></span>
+                </span>
+                <?php if ($v['jours'] < 0) : ?>
+                    <span class="vaccine-badge is-overdue">En retard de <?= abs($v['jours']) ?> j</span>
+                <?php else : ?>
+                    <span class="vaccine-badge is-soon">Dans <?= $v['jours'] ?> j</span>
+                <?php endif; ?>
+            </a>
+        <?php endforeach; ?>
     </div>
 </div>
+<?php endif; ?>
 
 <div class="activity-card">
     <svg class="activity-rings" viewBox="0 0 140 140" width="110" height="110">
