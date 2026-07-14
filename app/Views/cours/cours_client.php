@@ -130,7 +130,7 @@
 <style>
 .stade-container { display:inline-flex; gap:6px; align-items:center; }
 .stade-container .stade-checkbox { width:18px; height:18px; cursor:pointer; }
-.stade-container .stade-checkbox:checked { background:#4CAF50; border-color:#4CAF50; }
+.stade-container .stade-checkbox:checked { background:var(--accent); border-color:var(--accent); }
 </style>
 
 <script>
