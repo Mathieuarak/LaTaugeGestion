@@ -56,6 +56,9 @@
                         <a class="nav-link" href="<?= base_url('cours') ?>">Cours</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="<?= route_to('cours_calendrier') ?>">Calendrier</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?= route_to('cours_impayes') ?>">Impayés</a>
                     </li>
                     <li class="nav-item">

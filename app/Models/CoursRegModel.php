@@ -13,8 +13,9 @@ class CoursRegModel extends Model
 
     protected $allowedFields = [
         'coursDate',
+        'coursHeure',
         'description',
-        'clients_idclients', 
+        'clients_idclients',
         'paye'
     ];
 }

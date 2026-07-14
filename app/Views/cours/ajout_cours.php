@@ -29,10 +29,16 @@
                             </select>
                         </div>
 
-                        <!-- Date du cours -->
-                        <div class="mb-3">
-                            <label for="coursDate" class="form-label">Date du cours</label>
-                            <input type="date" name="coursDate" id="coursDate" class="form-control" required>
+                        <!-- Date et heure du cours -->
+                        <div class="row g-2 mb-3">
+                            <div class="col-7">
+                                <label for="coursDate" class="form-label">Date du cours</label>
+                                <input type="date" name="coursDate" id="coursDate" class="form-control" required>
+                            </div>
+                            <div class="col-5">
+                                <label for="coursHeure" class="form-label">Heure</label>
+                                <input type="time" name="coursHeure" id="coursHeure" class="form-control">
+                            </div>
                         </div>
 
                         <!-- Description -->

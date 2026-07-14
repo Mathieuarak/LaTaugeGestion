@@ -25,9 +25,15 @@
                     </select>
                 </div>
 
-                <div class="mb-3">
-                    <label for="coursDate" class="form-label">Date du cours :</label>
-                    <input type="date" name="coursDate" id="coursDate" value="<?= esc($cours['coursDate']) ?>" class="form-control" required>
+                <div class="row g-2 mb-3">
+                    <div class="col-7">
+                        <label for="coursDate" class="form-label">Date du cours :</label>
+                        <input type="date" name="coursDate" id="coursDate" value="<?= esc($cours['coursDate']) ?>" class="form-control" required>
+                    </div>
+                    <div class="col-5">
+                        <label for="coursHeure" class="form-label">Heure :</label>
+                        <input type="time" name="coursHeure" id="coursHeure" value="<?= esc(!empty($cours['coursHeure']) ? substr($cours['coursHeure'], 0, 5) : '') ?>" class="form-control">
+                    </div>
                 </div>
 
                 <div class="mb-3">

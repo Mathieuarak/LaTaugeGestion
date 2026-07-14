@@ -71,6 +71,7 @@ $routes->group('', ['filter' => 'session'], static function ($routes) {
     |--------------------------------------------------------------------------
     */
     $routes->get('cours', 'Cours::index', ['as' => 'cours']);
+    $routes->get('cours/calendrier', 'Cours::calendrier', ['as' => 'cours_calendrier']);
     $routes->get('cours/impayes', 'Cours::impayes', ['as' => 'cours_impayes']);
     $routes->get('cours/clients/(:num)', 'Cours::coursClient/$1', ['as' => 'cours_client']);
     $routes->post('cours/toggle-paye/(:num)', 'Cours::togglePaye/$1', ['as' => 'cours_toggle_paye']);

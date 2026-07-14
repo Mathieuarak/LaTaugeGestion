@@ -917,6 +917,105 @@ td .form-check-input[type="checkbox"]:hover {
 .empty-state .btn { margin-top: 16px; }
 
 /* ===============================
+   Calendrier hebdomadaire
+   =============================== */
+.calendar-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+.calendar-nav .week-label {
+    font-weight: 620;
+    color: var(--text);
+    font-size: 0.95rem;
+    min-width: 170px;
+    text-align: center;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    align-items: start;
+}
+.calendar-day {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-xs);
+    padding: 12px;
+    min-height: 130px;
+}
+.calendar-day.is-today {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+.calendar-day-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+.calendar-day-name {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+}
+.calendar-day-number {
+    font-size: 1.1rem;
+    font-weight: 650;
+    color: var(--text);
+}
+.calendar-day.is-today .calendar-day-number { color: var(--accent); }
+.calendar-empty {
+    color: var(--muted);
+    font-size: 0.76rem;
+    text-align: center;
+    padding: 14px 0;
+}
+.calendar-event {
+    display: block;
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: background var(--transition);
+}
+.calendar-event:hover { background: var(--surface-3); }
+.calendar-event:last-child { margin-bottom: 0; }
+.calendar-event .event-time {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent-dark);
+    display: block;
+    margin-bottom: 2px;
+}
+.calendar-event .event-client {
+    font-size: 0.82rem;
+    font-weight: 560;
+    color: var(--text);
+    display: block;
+}
+.calendar-event .event-option {
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: block;
+}
+
+@media (max-width: 900px) {
+    .calendar-grid { grid-template-columns: 1fr; }
+}
+
+/* ===============================
    Responsive
    =============================== */
 @media (max-width: 768px) {

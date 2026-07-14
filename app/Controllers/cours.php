@@ -254,6 +254,7 @@ class Cours extends BaseController
 
             $idcoursReg = $coursRegModel->insert([
                 'coursDate'         => $this->request->getPost('coursDate'),
+                'coursHeure'        => $this->request->getPost('coursHeure') ?: null,
                 'description'       => $description,
                 'clients_idclients' => $clientId
             ]);
@@ -368,6 +369,7 @@ class Cours extends BaseController
 
             $coursModel->update($id, [
                 'coursDate'         => $dateCours,
+                'coursHeure'        => $this->request->getPost('coursHeure') ?: null,
                 'description'       => $description,
                 'clients_idclients' => $clientId
             ]);
@@ -468,6 +470,82 @@ class Cours extends BaseController
 
         return redirect()->to(route_to('cours_client', $cours['clients_idclients']))
             ->with('success', 'Cours supprimé');
+    }
+
+    public function calendrier()
+    {
+        $offset = (int) ($this->request->getGet('semaine') ?? 0);
+
+        $today = new \DateTime();
+        $diffToMonday = ((int) $today->format('N')) - 1; // 1 (lundi) .. 7 (dimanche)
+        $lundi = (clone $today)->modify("-{$diffToMonday} days");
+        if ($offset !== 0) {
+            $lundi->modify(($offset * 7) . ' days');
+        }
+        $dimanche = (clone $lundi)->modify('+6 days');
+
+        $db = \Config\Database::connect();
+
+        $selectFields = ['c.idcoursReg', 'c.coursDate', 'c.coursHeure', 'c.description', 'cl.idclients', 'cl.nom', 'cl.prenom'];
+        foreach (array_keys(self::OPTIONS_UNIQUE) as $field) {
+            $selectFields[] = "link.$field as link_$field";
+        }
+
+        $rawCours = $db->table('coursreg c')
+            ->select(implode(', ', $selectFields))
+            ->join('clients cl', 'cl.idclients = c.clients_idclients', 'left')
+            ->join('courReg_tarifCourReg link', 'link.coursReg_idcoursReg = c.idcoursReg', 'left')
+            ->where('c.coursDate >=', $lundi->format('Y-m-d'))
+            ->where('c.coursDate <=', $dimanche->format('Y-m-d'))
+            ->orderBy('c.coursHeure', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $parJour = [];
+        foreach ($rawCours as $row) {
+            $option = '';
+            foreach (self::OPTIONS_UNIQUE as $field => $label) {
+                if (!empty($row['link_' . $field])) {
+                    $option = $label;
+                    break;
+                }
+            }
+
+            $parJour[$row['coursDate']][] = [
+                'id'          => $row['idcoursReg'],
+                'heure'       => $row['coursHeure'],
+                'client'      => trim($row['nom'] . ' ' . $row['prenom']),
+                'clientId'    => $row['idclients'],
+                'option'      => $option,
+                'description' => $row['description'],
+            ];
+        }
+
+        $joursNoms = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+        $moisNoms  = [1 => 'janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+        $aujourdHui = $today->format('Y-m-d');
+
+        $jours = [];
+        for ($i = 0; $i < 7; $i++) {
+            $date = (clone $lundi)->modify("+{$i} days");
+            $dateStr = $date->format('Y-m-d');
+            $jours[] = [
+                'nom'     => $joursNoms[$i],
+                'numero'  => $date->format('j'),
+                'isToday' => $dateStr === $aujourdHui,
+                'cours'   => $parJour[$dateStr] ?? [],
+            ];
+        }
+
+        $weekLabel = $lundi->format('j') . ' - ' . $dimanche->format('j') . ' ' . $moisNoms[(int) $dimanche->format('n')] . ' ' . $dimanche->format('Y');
+
+        return view('cours/calendrier', [
+            'jours'      => $jours,
+            'weekLabel'  => $weekLabel,
+            'offsetPrev' => $offset - 1,
+            'offsetNext' => $offset + 1,
+            'offsetActuel' => $offset,
+        ]);
     }
 
     public function impayes()
