@@ -36,18 +36,6 @@
 
                 <input type="hidden" name="idTarif" value="<?= esc($link['tarifCourForfait_idtarifCours'] ?? '') ?>">
 
-                <div class="mb-3">
-                    <strong>Type :</strong>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="type_cours" id="typeUnique" value="unique" <?= empty($link['tarifCourForfait_idtarifCours']) ? 'checked' : '' ?>>
-                        <label class="form-check-label" for="typeUnique">Cours à l’unité</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="type_cours" id="typeForfait" value="forfait" <?= !empty($link['tarifCourForfait_idtarifCours']) ? 'checked' : '' ?>>
-                        <label class="form-check-label" for="typeForfait">Forfait</label>
-                    </div>
-                </div>
-
                 <div class="text-center mt-4">
                     <input type="hidden" name="redirectClient" value="<?= esc($cours['clients_idclients']) ?>">
                     <button type="submit" class="btn btn-primary">Modifier le forfait</button>
@@ -58,36 +46,8 @@
             <!-- Partie tarif -->
             <div class="col-md-4">
 
-                <!-- Cours unique -->
-                <div id="bloc-unique">
-                    <div class="card p-3 mb-3">
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>Tarif du cours</span>
-                            <span id="totalDisplay" class="fw-bold">0 €</span>
-                        </div>
-                        <hr>
-                        <h6>Options</h6>
-                        <?php
-                        $optionsCours = [
-                            'tarifCourCollectifs' => 'Cours collectif',
-                            'tarifCourADeux' => 'Cours à deux',
-                            'tarifCourParticulier30' => 'Cours particulier 30 min',
-                            'tarifCourParticulier60' => 'Cours particulier 60 min',
-                            'tarifTravailCheval' => 'Travail du cheval'
-                        ];
-                        foreach ($optionsCours as $field => $label):
-                            $checked = !empty($link[$field]);
-                        ?>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="option_unique" value="<?= $field ?>" data-price="<?= esc($tarifs[$field]) ?>" id="<?= $field ?>" <?= $checked ? 'checked' : '' ?>>
-                                <label class="form-check-label" for="<?= $field ?>"><?= $label ?> (+<?= esc($tarifs[$field]) ?> €)</label>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-
                 <!-- Forfaits -->
-                <div id="bloc-forfait" style="display:none">
+                <div id="bloc-forfait">
                     <h6 class="mb-2">Forfaits</h6>
                     <div class="card p-3">
 
@@ -168,48 +128,20 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const totalDisplay = document.getElementById('totalDisplay');
     const totalDisplayForfait = document.getElementById('totalDisplayForfait');
     const totalInput = document.getElementById('total_tarif');
-    const blocUnique = document.getElementById('bloc-unique');
-    const blocForfait = document.getElementById('bloc-forfait');
-
-    function updateType() {
-        const sel = document.querySelector('input[name="type_cours"]:checked');
-        const type = sel ? sel.value : 'forfait';
-        blocUnique.style.display = (type === 'unique') ? 'block' : 'none';
-        blocForfait.style.display = (type === 'forfait') ? 'block' : 'none';
-        updateTotal();
-        updateTotalForfait();
-    }
-
-    function updateTotal() {
-        let total = 0;
-        const type = document.querySelector('input[name="type_cours"]:checked').value;
-        if (type === 'unique') {
-            document.querySelectorAll('#bloc-unique input[type=radio][data-price]').forEach(opt => {
-                if (opt.checked) total = parseFloat(opt.dataset.price);
-            });
-        }
-        totalDisplay.textContent = total.toFixed(2) + ' €';
-        totalInput.value = total;
-    }
 
     function updateTotalForfait() {
         let total = 0;
         const selected = document.querySelector('#bloc-forfait input[type=radio]:checked');
         if (selected) total = parseFloat(selected.dataset.price) || 0;
         totalDisplayForfait.textContent = total.toFixed(2) + ' €';
-        if (document.querySelector('input[name="type_cours"]:checked').value === 'forfait') {
-            totalInput.value = total;
-        }
+        totalInput.value = total;
     }
 
-    document.querySelectorAll('input[type=radio]').forEach(el => el.addEventListener('change', () => {
-        updateType();
-    }));
+    document.querySelectorAll('#bloc-forfait input[type=radio]').forEach(el => el.addEventListener('change', updateTotalForfait));
 
-    updateType();
+    updateTotalForfait();
 });
 </script>
 

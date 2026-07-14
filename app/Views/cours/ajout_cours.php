@@ -72,21 +72,49 @@
                         <h5 class="card-title">Tarif du cours</h5>
                         <div id="totalDisplay" class="fs-5 mb-3">0 €</div>
                         <hr>
-                        <h6>Options</h6>
                         <?php
-                        $optionsUnique = [
-                            'tarifCourCollectifs'   => 'Cours collectif',
-                            'tarifCourADeux'        => 'Cours à deux',
-                            'tarifCourParticulier30'=> 'Cours particulier 30 min',
-                            'tarifCourParticulier60'=> 'Cours particulier 60 min',
-                            'tarifTravailCheval'    => 'Travail du cheval'
+                        $optionsOccasionnels = [
+                            'tarifCourCollectifsOccasionnel'    => 'Cours collectif',
+                            'tarifCourADeuxOccasionnel'         => 'Cours à deux',
+                            'tarifCourParticulier30'            => 'Cours particulier 30 min',
+                            'tarifCourParticulier1hOccasionnel' => 'Cours particulier 1 heure',
+                        ];
+                        $optionsReguliers = [
+                            'tarifCourCollectifsRegulier'    => 'Cours collectif',
+                            'tarifCourADeuxRegulier'         => 'Cours à deux',
+                            'tarifCourParticulier1hRegulier' => 'Cours particulier 1 heure',
+                        ];
+                        $optionsAutres = [
+                            'tarifTravailCheval' => 'Travail du cheval',
                         ];
                         ?>
-                        <?php foreach ($optionsUnique as $field => $label): ?>
+
+                        <h6>Cours occasionnels</h6>
+                        <?php foreach ($optionsOccasionnels as $field => $label): ?>
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="option_unique" value="<?= $field ?>" data-price="<?= esc($tarifs[$field] ?? 0) ?>" id="<?= $field ?>">
                                 <label class="form-check-label" for="<?= $field ?>">
-                                    <?= $label ?> (+<?= esc($tarifs[$field] ?? 0) ?> €)
+                                    <?= $label ?> (<?= esc($tarifs[$field] ?? 0) ?> €)
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <h6 class="mt-3">Cours réguliers</h6>
+                        <?php foreach ($optionsReguliers as $field => $label): ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="option_unique" value="<?= $field ?>" data-price="<?= esc($tarifs[$field] ?? 0) ?>" id="<?= $field ?>">
+                                <label class="form-check-label" for="<?= $field ?>">
+                                    <?= $label ?> (<?= esc($tarifs[$field] ?? 0) ?> €)
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <h6 class="mt-3">Autres</h6>
+                        <?php foreach ($optionsAutres as $field => $label): ?>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="option_unique" value="<?= $field ?>" data-price="<?= esc($tarifs[$field] ?? 0) ?>" id="<?= $field ?>">
+                                <label class="form-check-label" for="<?= $field ?>">
+                                    <?= $label ?> (<?= esc($tarifs[$field] ?? 0) ?> €)
                                 </label>
                             </div>
                         <?php endforeach; ?>

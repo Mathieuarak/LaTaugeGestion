@@ -6,7 +6,6 @@ use App\Models\CoursForfaitModel;
 use App\Models\CourForfaitTarifCourForfaitModel;
 use App\Models\TarifCourForfaitModel;
 use App\Models\ClientModel;
-use App\Models\TarifCourRegModel;
 
 class CoursForfaitController extends BaseController
 {
@@ -86,8 +85,7 @@ class CoursForfaitController extends BaseController
             'cours' => $cours,
             'link'  => $link,
             'tarifsForfait' => $tarifModel->findAll(),
-            'clients' => (new ClientModel())->findAll(),
-            'tarifs'  => (new TarifCourRegModel())->first()
+            'clients' => (new ClientModel())->findAll()
         ]);
     }
 

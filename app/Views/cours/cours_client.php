@@ -27,14 +27,9 @@
                 </tr>
             </thead>
             <tbody>
-            <?php foreach($cours as $c): 
-                $options = '';
-                $prix = 0;
-                if($c['optCollectif']) { $options .= 'Collectif<br>'; $prix += $c['tarifCollectif']; }
-                if($c['optDeux']) { $options .= 'À deux<br>'; $prix += $c['tarifDeux']; }
-                if(!empty($c['optParticulier30'])) { $options .= 'Particulier 30 min<br>'; $prix += $c['tarifParticulier30']; }
-                if(!empty($c['optParticulier60'])) { $options .= 'Particulier 60 min<br>'; $prix += $c['tarifParticulier60']; }
-                if($c['optCheval']) { $options .= 'Travail cheval<br>'; $prix += $c['tarifCheval']; }
+            <?php foreach($cours as $c):
+                $options = esc($c['option']);
+                $prix = $c['prix'];
 
                 $payeForm = '<form action="'.route_to('cours_toggle_paye',$c['idcoursReg']).'" method="post" class="d-inline">
                                 <input type="hidden" name="redirect" value="'.current_url().'">

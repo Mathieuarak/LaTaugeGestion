@@ -12,10 +12,13 @@ class TarifCourRegModel extends Model
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'tarifCourCollectifs',
-        'tarifCourADeux',
+        'tarifCourCollectifsOccasionnel',
+        'tarifCourCollectifsRegulier',
+        'tarifCourADeuxOccasionnel',
+        'tarifCourADeuxRegulier',
         'tarifCourParticulier30',
-        'tarifCourParticulier60',
+        'tarifCourParticulier1hOccasionnel',
+        'tarifCourParticulier1hRegulier',
         'tarifTravailCheval'
     ];
 

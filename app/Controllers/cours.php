@@ -13,6 +13,17 @@ use App\Models\CourForfaitTarifCourForfaitModel;
 
 class Cours extends BaseController
 {
+    private const OPTIONS_UNIQUE = [
+        'tarifCourCollectifsOccasionnel'    => 'Cours collectif (occasionnel)',
+        'tarifCourCollectifsRegulier'       => 'Cours collectif (régulier)',
+        'tarifCourADeuxOccasionnel'         => 'Cours à deux (occasionnel)',
+        'tarifCourADeuxRegulier'            => 'Cours à deux (régulier)',
+        'tarifCourParticulier30'            => 'Cours particulier 30 min',
+        'tarifCourParticulier1hOccasionnel' => 'Cours particulier 1h (occasionnel)',
+        'tarifCourParticulier1hRegulier'    => 'Cours particulier 1h (régulier)',
+        'tarifTravailCheval'                => 'Travail du cheval',
+    ];
+
     public function index()
     {
         $db = \Config\Database::connect();
@@ -50,24 +61,43 @@ class Cours extends BaseController
         }
 
         // ===== COURS A L'UNITE =====
-        $cours = $db->table('coursreg c')
-            ->select('c.*,
-            t.tarifCourCollectifs as tarifCollectif,
-            t.tarifCourADeux as tarifDeux,
-            t.tarifCourParticulier30 as tarifParticulier30,
-            t.tarifCourParticulier60 as tarifParticulier60,
-            t.tarifTravailCheval as tarifCheval,
-            link.tarifCourCollectifs as optCollectif,
-            link.tarifCourADeux as optDeux,
-            link.tarifCourParticulier30 as optParticulier30,
-            link.tarifCourParticulier60 as optParticulier60,
-            link.tarifTravailCheval as optCheval
-        ')
+        $selectFields = ['c.idcoursReg', 'c.coursDate', 'c.description', 'c.clients_idclients', 'c.paye'];
+        foreach (array_keys(self::OPTIONS_UNIQUE) as $field) {
+            $selectFields[] = "t.$field as tarif_$field";
+            $selectFields[] = "link.$field as link_$field";
+        }
+
+        $rawCours = $db->table('coursreg c')
+            ->select(implode(', ', $selectFields))
             ->join('courReg_tarifCourReg link', 'link.coursReg_idcoursReg = c.idcoursReg', 'left')
             ->join('tarifCourReg t', 't.idtarifCourReg = link.tarifCourReg_idtarifCourReg', 'left')
             ->where('c.clients_idclients', $idClient)
             ->get()
             ->getResultArray();
+
+        $cours = [];
+        foreach ($rawCours as $row) {
+            $optionChoisie = '';
+            $prix = 0;
+
+            foreach (self::OPTIONS_UNIQUE as $field => $label) {
+                if (!empty($row['link_' . $field])) {
+                    $optionChoisie = $label;
+                    $prix = floatval($row['tarif_' . $field]);
+                    break;
+                }
+            }
+
+            $cours[] = [
+                'idcoursReg' => $row['idcoursReg'],
+                'coursDate'  => $row['coursDate'],
+                'description' => $row['description'],
+                'clients_idclients' => $row['clients_idclients'],
+                'paye'       => $row['paye'],
+                'option'     => $optionChoisie,
+                'prix'       => $prix,
+            ];
+        }
 
 
         // ===== FORFAITS =====
@@ -206,6 +236,10 @@ class Cours extends BaseController
 
             $option = $this->request->getPost('option_unique');
 
+            if (!array_key_exists($option, self::OPTIONS_UNIQUE)) {
+                return redirect()->back()->withInput()->with('error', 'Veuillez sélectionner un tarif.');
+            }
+
             $coursRegModel = new CoursRegModel();
             $linkModel     = new CourRegTarifCourRegModel();
             $tarifModel    = new TarifCourRegModel();
@@ -218,15 +252,13 @@ class Cours extends BaseController
                 'clients_idclients' => $clientId
             ]);
 
-            $linkModel->insert([
+            $flags = array_fill_keys(array_keys(self::OPTIONS_UNIQUE), 0);
+            $flags[$option] = 1;
+
+            $linkModel->insert(array_merge([
                 'coursReg_idcoursReg'         => $idcoursReg,
                 'tarifCourReg_idtarifCourReg' => $tarif['idtarifCourReg'],
-                'tarifCourCollectifs'   => $option === 'tarifCourCollectifs' ? 1 : 0,
-                'tarifCourADeux'        => $option === 'tarifCourADeux' ? 1 : 0,
-                'tarifCourParticulier30' => $option === 'tarifCourParticulier30' ? 1 : 0,
-                'tarifCourParticulier60' => $option === 'tarifCourParticulier60' ? 1 : 0,
-                'tarifTravailCheval'    => $option === 'tarifTravailCheval' ? 1 : 0,
-            ]);
+            ], $flags));
         }
 
         // -------------------
@@ -322,6 +354,10 @@ class Cours extends BaseController
 
             $option = $this->request->getPost('option_unique');
 
+            if (!array_key_exists($option, self::OPTIONS_UNIQUE)) {
+                return redirect()->back()->withInput()->with('error', 'Veuillez sélectionner un tarif.');
+            }
+
             $coursModel = new CoursRegModel();
             $linkModel  = new CourRegTarifCourRegModel();
             $tarifModel = new TarifCourRegModel();
@@ -332,23 +368,14 @@ class Cours extends BaseController
                 'clients_idclients' => $clientId
             ]);
 
-            $dataOptions = [
-                'tarifCourCollectifs'   => 0,
-                'tarifCourADeux'        => 0,
-                'tarifCourParticulier30' => 0,
-                'tarifCourParticulier60' => 0,
-                'tarifTravailCheval'    => 0,
-            ];
-
-            if ($option && array_key_exists($option, $dataOptions)) {
-                $dataOptions[$option] = 1;
-            }
+            $flags = array_fill_keys(array_keys(self::OPTIONS_UNIQUE), 0);
+            $flags[$option] = 1;
 
             $linkModel
                 ->where('coursReg_idcoursReg', $id)
                 ->set(array_merge([
                     'tarifCourReg_idtarifCourReg' => $tarifModel->first()['idtarifCourReg']
-                ], $dataOptions))
+                ], $flags))
                 ->update();
         } elseif ($type === 'forfait') {
 
