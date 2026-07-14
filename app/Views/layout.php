@@ -56,6 +56,9 @@
                         <a class="nav-link" href="<?= base_url('cours') ?>">Cours</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="<?= route_to('cours_impayes') ?>">Impayés</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-logout ms-lg-3" href="<?= base_url('logout') ?>">
                             Déconnexion
                         </a>

@@ -91,58 +91,6 @@
         text-decoration: none;
     }
 
-    .activity-card {
-        display: flex;
-        align-items: center;
-        gap: 22px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow-xs);
-        padding: 18px 24px;
-        max-width: 880px;
-        margin: 16px auto 0;
-        animation: homeUp 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) 0.26s backwards;
-    }
-    .activity-rings { flex-shrink: 0; transform: rotate(-90deg); }
-    .ring-track { fill: none; stroke: var(--surface-3); stroke-width: 11; }
-    .ring-fill {
-        fill: none;
-        stroke-linecap: round;
-        stroke-width: 11;
-        transform-origin: 70px 70px;
-        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        animation-duration: 1.3s;
-        animation-fill-mode: forwards;
-    }
-    .ring-fill-1 { stroke: var(--accent); stroke-dasharray: 326.7; stroke-dashoffset: 326.7; animation-name: ringFill1; animation-delay: 0.4s; }
-    .ring-fill-2 { stroke: var(--blue);   stroke-dasharray: 238.8; stroke-dashoffset: 238.8; animation-name: ringFill2; animation-delay: 0.55s; }
-    .ring-fill-3 { stroke: var(--purple); stroke-dasharray: 150.8; stroke-dashoffset: 150.8; animation-name: ringFill3; animation-delay: 0.7s; }
-    @keyframes ringFill1 { to { stroke-dashoffset: 71.9; } }
-    @keyframes ringFill2 { to { stroke-dashoffset: 19.1; } }
-    @keyframes ringFill3 { to { stroke-dashoffset: 52.8; } }
-
-    .activity-title { font-weight: 620; font-size: 1rem; color: var(--text); margin-bottom: 2px; }
-    .activity-sub { color: var(--muted); font-size: 0.85rem; }
-    .activity-legend { display: flex; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
-    .activity-legend span {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.78rem;
-        color: var(--text-soft);
-        font-weight: 500;
-    }
-    .activity-legend i {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        display: inline-block;
-    }
-    .activity-legend .dot-accent { background: var(--accent); }
-    .activity-legend .dot-blue   { background: var(--blue); }
-    .activity-legend .dot-purple { background: var(--purple); }
-
     .home-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -311,26 +259,6 @@
     </div>
 </div>
 <?php endif; ?>
-
-<div class="activity-card">
-    <svg class="activity-rings" viewBox="0 0 140 140" width="110" height="110">
-        <circle class="ring-track" cx="70" cy="70" r="52" />
-        <circle class="ring-track" cx="70" cy="70" r="38" />
-        <circle class="ring-track" cx="70" cy="70" r="24" />
-        <circle class="ring-fill ring-fill-1" cx="70" cy="70" r="52" />
-        <circle class="ring-fill ring-fill-2" cx="70" cy="70" r="38" />
-        <circle class="ring-fill ring-fill-3" cx="70" cy="70" r="24" />
-    </svg>
-    <div>
-        <div class="activity-title">Activité de l'écurie</div>
-        <div class="activity-sub">Un aperçu vivant de la vie du centre — clients, chevaux et cours au quotidien.</div>
-        <div class="activity-legend">
-            <span><i class="dot-accent"></i>Clients</span>
-            <span><i class="dot-blue"></i>Chevaux</span>
-            <span><i class="dot-purple"></i>Cours</span>
-        </div>
-    </div>
-</div>
 
 <div class="home-grid">
 

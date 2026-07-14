@@ -540,13 +540,16 @@ input[type="checkbox"],
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
     box-shadow: var(--shadow-xs);
 }
 
 table,
 .table {
     width: 100%;
+    min-width: 560px;
     border-collapse: collapse;
     background: var(--surface);
     margin: 0;
